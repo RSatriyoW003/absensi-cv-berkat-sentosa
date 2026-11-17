@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Dashboard Admin - Absensi CV Berkat Sentosa</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- SIDEBAR OVERLAY ADMIN -->
+    <div id="admin-sidebar-overlay" class="sidebar-overlay" onclick="closeAdminSidebar()"></div>
+
+    <!-- SIDEBAR DRAWER ADMIN -->
+    <aside id="admin-sidebar-drawer" class="sidebar-drawer">
+        <div class="sidebar-header sidebar-header-admin">
+            <button type="button" class="sidebar-close-btn" onclick="closeAdminSidebar()" title="Tutup Menu">&times;</button>
+            <div class="sidebar-user-info">
+                <div class="sidebar-user-avatar" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-color: rgba(255,255,255,0.3);">🛡️</div>
+                <div class="sidebar-user-meta">
+                    <div id="drawer-admin-name" class="sidebar-user-name">Memuat Nama...</div>
+                    <div id="drawer-admin-email" class="sidebar-user-email">Memuat Email...</div>
+                    <div class="sidebar-badges-row">
+                        <span class="drawer-badge-admin">🛡️ Super Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="sidebar-menu-category">
+                <span>📁</span>
+                <span>Ringkasan & Utama</span>
+            </div>
+            <a href="dashboard.html" class="sidebar-menu-item active active-admin">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard Utama</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>👥</span>
+                <span>Manajemen SDM</span>
+            </div>
+            <a href="employees.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Karyawan & Akun</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>⏰</span>
+                <span>Presensi & Operasional</span>
+            </div>
+            <a href="schedule.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">⏰</span>
+                    <span>Jadwal Kerja Kantor</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=approvals" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📝</span>
+                    <span>Persetujuan Izin</span>
+                </div>
+                <span id="drawer-badge-pending-leaves" class="sidebar-menu-badge" style="display: none;">0</span>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=rekap" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Rekap Presensi</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="offices.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">🏢</span>
+                    <span>Lokasi Kantor CBS</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>📈</span>
+                <span>Analisis Kinerja</span>
+            </div>
+            <a href="analytics.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Hasil Kedisiplinan</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button type="button" class="sidebar-logout-btn" onclick="handleLogout('../login.html')">
+                <span>🚪</span>
+                <span>Keluar (Logout)</span>
+            </button>
+            <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 8px;">
+                CV Berkat Sentosa v2.0
+            </div>
+        </div>
+    </aside>
+
+    <div class="page-container">
+        <div class="main-card wide-card">
+
+            <!-- TOP APP BAR ADMIN -->
+            <div class="top-app-bar">
+                <div class="top-app-bar-left">
+                    <button type="button" class="menu-toggle-btn" onclick="toggleAdminSidebar()" title="Buka Menu Admin" aria-label="Menu">
+                        ☰
+                    </button>
+                    <div>
+                        <div class="top-brand-title">Admin CBS</div>
+                        <div class="top-brand-subtitle">CV Berkat Sentosa</div>
+                    </div>
+                </div>
+
+                <!-- DESKTOP NAVIGATION TABS ADMIN -->
+                <nav class="desktop-nav-links">
+                    <a href="dashboard.html" class="desktop-nav-tab active active-admin">
+                        <span>📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="employees.html" class="desktop-nav-tab">
+                        <span>👥</span>
+                        <span>Karyawan</span>
+                    </a>
+                    <a href="schedule.html" class="desktop-nav-tab">
+                        <span>⏰</span>
+                        <span>Jam Kerja</span>
+                    </a>
+                    <a href="offices.html" class="desktop-nav-tab">
+                        <span>🏢</span>
+                        <span>Lokasi CBS</span>
+                    </a>
+                    <a href="attendances.html" class="desktop-nav-tab">
+                        <span>📋</span>
+                        <span>Rekap & Izin</span>
+                    </a>
+                    <a href="analytics.html" class="desktop-nav-tab">
+                        <span>📊</span>
+                        <span>Kedisiplinan</span>
+                    </a>
+                </nav>
+
+                <div class="top-app-bar-right">
+                    <button type="button" class="top-action-btn-icon" onclick="loadDashboardData()" title="Muat Ulang Data">🔄</button>
+                    <button type="button" class="top-action-btn-logout desktop-only-btn" onclick="handleLogout('../login.html')" title="Keluar">
+                        🚪 Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- PROFIL ADMIN & INFO JAM KERJA AKTIF -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Panel Administrator</div>
+                        <strong id="admin-name" style="font-size: 17px; color: #0f172a;">Admin</strong>
+                        <span id="admin-email" style="font-size: 13px; color: #64748b; margin-left: 6px;">-</span>
+                    </div>
+                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                        <span class="badge badge-purple" style="font-size: 11.5px; padding: 4px 10px;">🛡️ Super Admin</span>
+                        <a href="schedule.html" id="active-schedule-badge" class="badge badge-info" style="text-decoration: none; font-size: 11.5px; padding: 4px 10px;">
+                            ⏰ Jam Kerja: Memuat...
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RINGKASAN DATA AKUN & PRESENSI HARI INI -->
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h3 style="font-size: 15px; font-weight: 700; margin: 0; color: #0f172a;">📈 Ringkasan Presensi Hari Ini</h3>
+                    <small style="color: #64748b; font-size: 12px;">Data kehadiran real-time hari ini</small>
+                </div>
+                <div class="stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Karyawan</div>
+                        <div id="stat-total-emp" class="stat-number">-</div>
+                    </div>
+                    <div class="stat-card" style="border-color: #bbf7d0; background: #ffffff;">
+                        <div class="stat-label" style="color: #166534;">Tepat Waktu</div>
+                        <div id="stat-present" class="stat-number" style="color: #16a34a;">-</div>
+                    </div>
+                    <div class="stat-card" style="border-color: #fed7aa; background: #ffffff;">
+                        <div class="stat-label" style="color: #9a3412;">Terlambat</div>
+                        <div id="stat-late" class="stat-number" style="color: #ea580c;">-</div>
+                    </div>
+                    <div class="stat-card" style="border-color: #fde68a; background: #fffdf5;">
+                        <div class="stat-label" style="color: #92400e;">Izin Pending (Review)</div>
+                        <div id="stat-pending-leaves" class="stat-number" style="color: #d97706;">0</div>
+                    </div>
+                    <div class="stat-card" style="border-color: #bfdbfe; background: #ffffff;">
+                        <div class="stat-label" style="color: #1e40af;">Izin Disetujui</div>
+                        <div id="stat-leave-sick" class="stat-number" style="color: #2563eb;">-</div>
+                    </div>
+                    <div class="stat-card" style="border-color: #fecaca; background: #ffffff;">
+                        <div class="stat-label" style="color: #991b1b;">Belum Presensi</div>
+                        <div id="stat-not-checked" class="stat-number" style="color: #dc2626;">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PEMBERITAHUAN OPERASIONAL: PENGAJUAN IZIN MENUNGGU REVIEW -->
+            <div id="pending-leave-alert-card" class="operational-notice-card" style="display: none;">
+                <div class="operational-notice-content">
+                    <div class="operational-notice-icon">📝</div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 14px; color: #92400e;">
+                            Ada <span id="alert-pending-count">0</span> Pengajuan Izin Menunggu Persetujuan
+                        </div>
+                        <div style="font-size: 12px; color: #b45309; margin-top: 2px;">
+                            Karyawan mengajukan permohonan izin/sakit yang membutuhkan verifikasi Anda.
+                        </div>
+                    </div>
+                </div>
+                <a href="attendances.html?tab=approvals" class="btn btn-warning btn-sm" style="font-size: 12px; font-weight: 700; padding: 7px 14px; border-radius: 8px; text-decoration: none;">
+                    Tinjau Pengajuan →
+                </a>
+            </div>
+
+            <!-- PANEL RINGKASAN KEDISIPLINAN KARYAWAN -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); margin-bottom: 22px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h4 style="margin: 0; font-size: 15px; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+                            <span>📊</span> Ringkasan Kedisiplinan Karyawan
+                        </h4>
+                        <p style="font-size: 12.5px; color: #64748b; margin: 4px 0 0 0;">
+                            Klasifikasi kepatuhan jam kerja karyawan berdasarkan riwayat absensi aktual.
+                        </p>
+                    </div>
+                    <a href="analytics.html" class="btn btn-outline btn-sm" style="font-size: 12px; padding: 6px 14px; border-radius: 8px;">
+                        Lihat Grafik & Analisis Lengkap →
+                    </a>
+                </div>
+
+                <!-- 3 KARTU KATEGORI KEDISIPLINAN -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 16px;">
+                    <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 10px; padding: 14px 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="badge badge-success" style="font-size: 11.5px; font-weight: 700;">🟢 Disiplin</span>
+                            <span id="dash-pct-disiplin" style="font-size: 12px; font-weight: 600; color: #166534;">-</span>
+                        </div>
+                        <div id="dash-count-disiplin" style="font-size: 26px; font-weight: 800; color: #16a34a; margin-top: 8px; line-height: 1;">-</div>
+                        <div style="font-size: 11.5px; color: #166534; margin-top: 6px;">Kehadiran tinggi & tepat waktu</div>
+                    </div>
+
+                    <div style="background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 14px 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="badge badge-warning" style="font-size: 11.5px; font-weight: 700;">🟡 Cukup Disiplin</span>
+                            <span id="dash-pct-cukup" style="font-size: 12px; font-weight: 600; color: #92400e;">-</span>
+                        </div>
+                        <div id="dash-count-cukup" style="font-size: 26px; font-weight: 800; color: #d97706; margin-top: 8px; line-height: 1;">-</div>
+                        <div style="font-size: 11.5px; color: #92400e; margin-top: 6px;">Keterlambatan ringan terkontrol</div>
+                    </div>
+
+                    <div style="background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 10px; padding: 14px 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="badge badge-danger" style="font-size: 11.5px; font-weight: 700;">🔴 Perlu Evaluasi</span>
+                            <span id="dash-pct-evaluasi" style="font-size: 12px; font-weight: 600; color: #991b1b;">-</span>
+                        </div>
+                        <div id="dash-count-evaluasi" style="font-size: 26px; font-weight: 800; color: #dc2626; margin-top: 8px; line-height: 1;">-</div>
+                        <div style="font-size: 11.5px; color: #991b1b; margin-top: 6px;">Perlu pembinaan kehadiran & alpa</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RINGKASAN AKTIVITAS TERBARU HARI INI -->
+            <div style="border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px 20px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h4 style="margin: 0; font-size: 14.5px; font-weight: 700; color: #0f172a;">📍 Aktivitas Presensi Hari Ini</h4>
+                        <small style="color: #64748b;">Daftar presensi pegawai CV Berkat Sentosa yang masuk hari ini</small>
+                    </div>
+                    <a href="attendances.html?tab=rekap" class="btn btn-outline btn-sm" style="font-size: 11.5px; padding: 5px 12px;">
+                        Lihat Rekap Lengkap →
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Karyawan</th>
+                                <th>Status Kehadiran</th>
+                                <th>Jam Masuk</th>
+                                <th>Lokasi Kantor</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="today-activity-tbody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: #64748b; padding: 18px;">Memuat aktivitas presensi...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="../js/api.js"></script>
+    <script>
+        const token = localStorage.getItem('api_token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user) {
+            window.location.href = '../login.html';
+        }
+
+        if (user.role !== 'admin') {
+            alert('Akses hanya untuk akun administrator.');
+            window.location.href = '../dashboard.html';
+        }
+
+        document.getElementById('admin-name').textContent = user.name || 'Admin';
+        document.getElementById('admin-email').textContent = user.email || '-';
+
+        const dName = document.getElementById('drawer-admin-name');
+        const dEmail = document.getElementById('drawer-admin-email');
+        if (dName) dName.textContent = user.name || 'Administrator';
+        if (dEmail) dEmail.textContent = user.email || '-';
+
+        function toggleAdminSidebar() {
+            const drawer = document.getElementById('admin-sidebar-drawer');
+            if (drawer.classList.contains('open')) {
+                closeAdminSidebar();
+            } else {
+                openAdminSidebar();
+            }
+        }
+
+        function openAdminSidebar() {
+            document.getElementById('admin-sidebar-drawer').classList.add('open');
+            document.getElementById('admin-sidebar-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('sidebar-open');
+        }
+
+        function closeAdminSidebar() {
+            document.getElementById('admin-sidebar-drawer').classList.remove('open');
+            document.getElementById('admin-sidebar-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+            document.body.classList.remove('sidebar-open');
+        }
+
+        async function loadDashboardData() {
+            try {
+                // 1. Muat Statistik Presensi Hari Ini
+                const statsData = await apiRequest('/admin/dashboard-stats');
+                const stats = statsData.stats;
+
+                document.getElementById('stat-total-emp').textContent = stats.total_employees;
+                document.getElementById('stat-present').textContent = stats.today_present;
+                document.getElementById('stat-late').textContent = stats.today_late;
+                
+                // Izin pending alert
+                const pendingCount = stats.total_pending_leaves || 0;
+                const statPendingEl = document.getElementById('stat-pending-leaves');
+                if (statPendingEl) statPendingEl.textContent = pendingCount;
+
+                const alertCard = document.getElementById('pending-leave-alert-card');
+                const alertCountEl = document.getElementById('alert-pending-count');
+                if (alertCard && alertCountEl) {
+                    if (pendingCount > 0) {
+                        alertCountEl.textContent = pendingCount;
+                        alertCard.style.display = 'flex';
+                    } else {
+                        alertCard.style.display = 'none';
+                    }
+                }
+
+                const drawerBadge = document.getElementById('drawer-badge-pending-leaves');
+                if (drawerBadge) {
+                    if (pendingCount > 0) {
+                        drawerBadge.textContent = pendingCount;
+                        drawerBadge.style.display = 'inline-block';
+                    } else {
+                        drawerBadge.style.display = 'none';
+                    }
+                }
+                
+                const totalLeaveSick = (stats.today_leave || 0) + (stats.today_sick || 0);
+                document.getElementById('stat-leave-sick').textContent = totalLeaveSick;
+                document.getElementById('stat-not-checked').textContent = stats.today_not_checked_in;
+
+                // 2. Muat Jadwal Jam Kerja Aktif
+                const schedData = await apiRequest('/admin/work-schedule');
+                if (schedData.schedule) {
+                    const s = schedData.schedule;
+                    const inTime = s.work_start_time ? s.work_start_time.substring(0, 5) : '08:00';
+                    const tolTime = s.late_tolerance_time ? s.late_tolerance_time.substring(0, 5) : '08:15';
+                    const outTime = s.work_end_time ? s.work_end_time.substring(0, 5) : '17:00';
+                    document.getElementById('active-schedule-badge').textContent = `⏰ Masuk ${inTime} (Toleransi ${tolTime}) • Pulang ${outTime}`;
+                }
+
+                // 3. Muat Ringkasan Kedisiplinan Karyawan Aktual
+                loadDisciplineSummary();
+
+                // 4. Muat Aktivitas Presensi Hari Ini
+                loadTodayActivity();
+
+            } catch (err) {
+                console.error('Gagal memuat dashboard:', err);
+            }
+        }
+
+        async function loadDisciplineSummary() {
+            try {
+                const res = await apiRequest('/admin/kmeans-clustering');
+                if (res && res.clusters && res.clusters.length > 0) {
+                    const c1 = res.clusters.find(c => c.rank === 1) || res.clusters[0];
+                    const c2 = res.clusters.find(c => c.rank === 2) || res.clusters[1];
+                    const c3 = res.clusters.find(c => c.rank === 3) || res.clusters[2];
+
+                    const totalEmp = res.evaluation ? res.evaluation.total_employees_analyzed : ((c1 ? c1.member_count : 0) + (c2 ? c2.member_count : 0) + (c3 ? c3.member_count : 0));
+
+                    const count1 = c1 ? c1.member_count : 0;
+                    const count2 = c2 ? c2.member_count : 0;
+                    const count3 = c3 ? c3.member_count : 0;
+
+                    document.getElementById('dash-count-disiplin').textContent = count1;
+                    document.getElementById('dash-count-cukup').textContent = count2;
+                    document.getElementById('dash-count-evaluasi').textContent = count3;
+
+                    if (totalEmp > 0) {
+                        const pct1El = document.getElementById('dash-pct-disiplin');
+                        const pct2El = document.getElementById('dash-pct-cukup');
+                        const pct3El = document.getElementById('dash-pct-evaluasi');
+
+                        if (pct1El) pct1El.textContent = `${((count1 / totalEmp) * 100).toFixed(0)}% Karyawan`;
+                        if (pct2El) pct2El.textContent = `${((count2 / totalEmp) * 100).toFixed(0)}% Karyawan`;
+                        if (pct3El) pct3El.textContent = `${((count3 / totalEmp) * 100).toFixed(0)}% Karyawan`;
+                    }
+                } else {
+                    document.getElementById('dash-count-disiplin').textContent = '-';
+                    document.getElementById('dash-count-cukup').textContent = '-';
+                    document.getElementById('dash-count-evaluasi').textContent = '-';
+                }
+            } catch (err) {
+                console.log('Kedisiplinan belum tersedia:', err);
+            }
+        }
+
+        async function loadTodayActivity() {
+            const tbody = document.getElementById('today-activity-tbody');
+            try {
+                const todayStr = new Date().toISOString().split('T')[0];
+                const res = await apiRequest(`/admin/attendances?start_date=${todayStr}&end_date=${todayStr}&per_page=5`);
+                const list = res.attendances || [];
+
+                if (list.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #64748b; padding: 18px;">Belum ada aktivitas presensi hari ini.</td></tr>`;
+                    return;
+                }
+
+                let rows = '';
+                list.forEach(att => {
+                    let statusBadge = '<span class="badge badge-success">Hadir</span>';
+                    if (att.status === 'late') statusBadge = '<span class="badge badge-warning">Terlambat</span>';
+                    else if (att.status === 'leave') statusBadge = '<span class="badge badge-info">Izin</span>';
+                    else if (att.status === 'sick') statusBadge = '<span class="badge badge-warning">Sakit</span>';
+                    else if (att.status === 'absent') statusBadge = '<span class="badge badge-danger">Alpa</span>';
+
+                    const empName = att.employee?.user?.name || 'Karyawan';
+                    const officeName = att.office_location?.name || 'Kantor CV Berkat Sentosa (Pusat)';
+                    const checkInTime = att.check_in ? new Date(att.check_in).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB' : '-';
+                    const notes = att.notes || (att.status === 'present' ? 'Tepat Waktu' : '-');
+
+                    rows += `
+                        <tr>
+                            <td><strong>${empName}</strong></td>
+                            <td>${statusBadge}</td>
+                            <td>${checkInTime}</td>
+                            <td>${officeName}</td>
+                            <td class="table-col-notes"><div class="table-col-notes-box" style="background: transparent; border: none; padding: 0;">${notes}</div></td>
+                        </tr>
+                    `;
+                });
+
+                tbody.innerHTML = rows;
+
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #dc2626; padding: 14px;">Gagal memuat aktivitas: ${err.message}</td></tr>`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardData();
+        });
+    </script>
+</body>
+</html>

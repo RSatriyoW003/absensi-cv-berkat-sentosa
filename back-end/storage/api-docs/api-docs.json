@@ -1,0 +1,838 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Sistem Absensi CV Berkat Sentosa",
+        "description": "Dokumentasi API untuk sistem absensi karyawan CV Berkat Sentosa.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Local Development Server"
+        }
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login pengguna",
+                "operationId": "9106156183bb7aef790723b37a5e2bde",
+                "responses": {
+                    "200": {
+                        "description": "Login berhasil"
+                    },
+                    "401": {
+                        "description": "Login gagal"
+                    }
+                }
+            }
+        },
+        "/api/register-admin": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Registrasi akun admin",
+                "operationId": "980d9511e301868187a4089e7565147b",
+                "responses": {
+                    "201": {
+                        "description": "Admin berhasil dibuat"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout pengguna",
+                "operationId": "359ec802eac6a73659437810eb8dcabf",
+                "responses": {
+                    "200": {
+                        "description": "Logout berhasil"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Melihat profil pengguna",
+                "operationId": "d5019d0c7aa5f3d757490ca3fe98259b",
+                "responses": {
+                    "200": {
+                        "description": "Profil berhasil diambil"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Memperbarui profil pengguna",
+                "operationId": "61893feeebd4d52957500332b68904fd",
+                "responses": {
+                    "200": {
+                        "description": "Profil diperbarui"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/dashboard": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Menampilkan dashboard",
+                "operationId": "6afed241a731c90756625f8de49fa77a",
+                "responses": {
+                    "200": {
+                        "description": "Data dashboard"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/attendance/attachment/{id}": {
+            "get": {
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Mengambil lampiran absensi",
+                "operationId": "f234737d9be489a7760df7757bbbf8f7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lampiran berhasil diambil"
+                    }
+                }
+            }
+        },
+        "/api/work-schedule": {
+            "get": {
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Melihat jadwal kerja",
+                "operationId": "8198ee7f23bc68495e16d1a3b05e978e",
+                "responses": {
+                    "200": {
+                        "description": "Jadwal kerja berhasil diambil"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/attendance/check-in": {
+            "post": {
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Melakukan absensi masuk",
+                "operationId": "5b781595f8abf0670c5f623b701ea26c",
+                "responses": {
+                    "200": {
+                        "description": "Check-in berhasil"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/attendance/check-out": {
+            "post": {
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Melakukan absensi pulang",
+                "operationId": "d7274be204a9668c9d70a026f8681d65",
+                "responses": {
+                    "200": {
+                        "description": "Check-out berhasil"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/attendance/leave": {
+            "post": {
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Mengajukan izin atau sakit",
+                "operationId": "75bc8538790a874237541512094771c6",
+                "responses": {
+                    "200": {
+                        "description": "Pengajuan berhasil"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/attendance/history": {
+            "get": {
+                "tags": [
+                    "Attendance"
+                ],
+                "summary": "Melihat riwayat absensi",
+                "operationId": "cd574747907631dbd1964dcac0fdcc37",
+                "responses": {
+                    "200": {
+                        "description": "Riwayat absensi"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/employees": {
+            "get": {
+                "tags": [
+                    "Admin - Employees"
+                ],
+                "summary": "Melihat daftar karyawan",
+                "operationId": "62ccecd5eafa2c53c0b8e21365fd2484",
+                "responses": {
+                    "200": {
+                        "description": "Daftar karyawan"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin - Employees"
+                ],
+                "summary": "Menambahkan karyawan",
+                "operationId": "869380fe669d4cbf55c0b42fe1cdac12",
+                "responses": {
+                    "201": {
+                        "description": "Karyawan ditambahkan"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/employees/{employee}": {
+            "get": {
+                "tags": [
+                    "Admin - Employees"
+                ],
+                "summary": "Melihat detail karyawan",
+                "operationId": "d8e0abcd2822ad418c5a7be8e5477456",
+                "parameters": [
+                    {
+                        "name": "employee",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail karyawan"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Admin - Employees"
+                ],
+                "summary": "Memperbarui data karyawan",
+                "operationId": "0a5c341f407c9018b6bd384c94654be0",
+                "parameters": [
+                    {
+                        "name": "employee",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data diperbarui"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Admin - Employees"
+                ],
+                "summary": "Menghapus karyawan",
+                "operationId": "5eec28f0dabe4466f35808d20aac5495",
+                "parameters": [
+                    {
+                        "name": "employee",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Karyawan dihapus"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/admins": {
+            "get": {
+                "tags": [
+                    "Admin - Accounts"
+                ],
+                "summary": "Melihat daftar admin",
+                "operationId": "41c94e8763ef2621c069ba17eb875cdc",
+                "responses": {
+                    "200": {
+                        "description": "Daftar admin"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin - Accounts"
+                ],
+                "summary": "Menambahkan akun admin",
+                "operationId": "f77c8f804d9aa4ea257f8a82222f84b6",
+                "responses": {
+                    "201": {
+                        "description": "Admin ditambahkan"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/admins/{user}": {
+            "put": {
+                "tags": [
+                    "Admin - Accounts"
+                ],
+                "summary": "Memperbarui akun admin",
+                "operationId": "ea6860b92da83b68da946585797dfbab",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Admin diperbarui"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Admin - Accounts"
+                ],
+                "summary": "Menghapus akun admin",
+                "operationId": "5a158cd2a6c6f471b871b91de0d659d5",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Admin dihapus"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/users-overview": {
+            "get": {
+                "tags": [
+                    "Admin - Accounts"
+                ],
+                "summary": "Melihat ringkasan pengguna",
+                "operationId": "1d8d7fc8261ceef58f2a4ac764c6a7c4",
+                "responses": {
+                    "200": {
+                        "description": "Ringkasan pengguna"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/work-schedule": {
+            "get": {
+                "tags": [
+                    "Admin - Work Schedule"
+                ],
+                "summary": "Melihat pengaturan jam kerja",
+                "operationId": "d9e6c9ad5b3a54ee238f0ebb8ac08ff3",
+                "responses": {
+                    "200": {
+                        "description": "Jadwal kerja"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Admin - Work Schedule"
+                ],
+                "summary": "Memperbarui pengaturan jam kerja",
+                "operationId": "7780c486c0bf0fd4846a1d2bc39f40e0",
+                "responses": {
+                    "200": {
+                        "description": "Jadwal diperbarui"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/offices": {
+            "get": {
+                "tags": [
+                    "Office Locations"
+                ],
+                "summary": "Melihat lokasi kantor",
+                "operationId": "9b820ac674ca5376cf591ea921556932",
+                "responses": {
+                    "200": {
+                        "description": "Daftar lokasi kantor"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/offices": {
+            "get": {
+                "tags": [
+                    "Admin - Office Locations"
+                ],
+                "summary": "Melihat daftar lokasi kantor admin",
+                "operationId": "b192c647aa556f40a451d2e21ea8c5bb",
+                "responses": {
+                    "200": {
+                        "description": "Daftar lokasi"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin - Office Locations"
+                ],
+                "summary": "Menambahkan lokasi kantor",
+                "operationId": "839337438b4ed702e28aca540a2da140",
+                "responses": {
+                    "201": {
+                        "description": "Lokasi ditambahkan"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/office": {
+            "get": {
+                "tags": [
+                    "Admin - Office Locations"
+                ],
+                "summary": "Melihat lokasi kantor tunggal",
+                "operationId": "20f3928fa99c5117158d9098b36b9fd8",
+                "responses": {
+                    "200": {
+                        "description": "Lokasi kantor"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Admin - Office Locations"
+                ],
+                "summary": "Memperbarui lokasi kantor tunggal",
+                "operationId": "ac38c5a6aa1f6e53ca7721332b0da474",
+                "responses": {
+                    "200": {
+                        "description": "Lokasi diperbarui"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/offices/{office}": {
+            "put": {
+                "tags": [
+                    "Admin - Office Locations"
+                ],
+                "summary": "Memperbarui lokasi kantor",
+                "operationId": "c1ee734dab80e3e8aaaa5ded54929380",
+                "parameters": [
+                    {
+                        "name": "office",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lokasi diperbarui"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/attendances": {
+            "get": {
+                "tags": [
+                    "Admin - Attendance Reports"
+                ],
+                "summary": "Melihat rekap absensi",
+                "operationId": "bb5115fa9592a5a2135009e9962db0c4",
+                "responses": {
+                    "200": {
+                        "description": "Rekap absensi"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/attendances/record-status": {
+            "post": {
+                "tags": [
+                    "Admin - Attendance Reports"
+                ],
+                "summary": "Mencatat status absensi manual",
+                "operationId": "fd2c16d414b13daa6838edfd90e8f169",
+                "responses": {
+                    "200": {
+                        "description": "Status dicatat"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/dashboard-stats": {
+            "get": {
+                "tags": [
+                    "Admin - Attendance Reports"
+                ],
+                "summary": "Melihat statistik dashboard admin",
+                "operationId": "bea3fd2418a8364c45d3a28657770800",
+                "responses": {
+                    "200": {
+                        "description": "Statistik dashboard"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/leave-requests": {
+            "get": {
+                "tags": [
+                    "Admin - Leave Approval"
+                ],
+                "summary": "Melihat permintaan izin",
+                "operationId": "f172dc8b95c03ca7ea6a547ae6084da4",
+                "responses": {
+                    "200": {
+                        "description": "Daftar permintaan izin"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/leave-requests/{attendance}/approve": {
+            "post": {
+                "tags": [
+                    "Admin - Leave Approval"
+                ],
+                "summary": "Menyetujui permintaan izin",
+                "operationId": "25539ae7fda56626dfb6c292ad2f99b2",
+                "parameters": [
+                    {
+                        "name": "attendance",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Izin disetujui"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/leave-requests/{attendance}/reject": {
+            "post": {
+                "tags": [
+                    "Admin - Leave Approval"
+                ],
+                "summary": "Menolak permintaan izin",
+                "operationId": "8db2e129ddc5cda08c78555098ee3462",
+                "parameters": [
+                    {
+                        "name": "attendance",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Izin ditolak"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/kmeans-clustering": {
+            "get": {
+                "tags": [
+                    "Admin - K-Means"
+                ],
+                "summary": "Analisis clustering K-Means",
+                "operationId": "1e5b79a3756073e072b5b0ef1b15446d",
+                "responses": {
+                    "200": {
+                        "description": "Hasil clustering"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "bearerFormat": "Token",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Profile",
+            "description": "Profile"
+        },
+        {
+            "name": "Dashboard",
+            "description": "Dashboard"
+        },
+        {
+            "name": "Attendance",
+            "description": "Attendance"
+        },
+        {
+            "name": "Admin - Employees",
+            "description": "Admin - Employees"
+        },
+        {
+            "name": "Admin - Accounts",
+            "description": "Admin - Accounts"
+        },
+        {
+            "name": "Admin - Work Schedule",
+            "description": "Admin - Work Schedule"
+        },
+        {
+            "name": "Office Locations",
+            "description": "Office Locations"
+        },
+        {
+            "name": "Admin - Office Locations",
+            "description": "Admin - Office Locations"
+        },
+        {
+            "name": "Admin - Attendance Reports",
+            "description": "Admin - Attendance Reports"
+        },
+        {
+            "name": "Admin - Leave Approval",
+            "description": "Admin - Leave Approval"
+        },
+        {
+            "name": "Admin - K-Means",
+            "description": "Admin - K-Means"
+        }
+    ]
+}

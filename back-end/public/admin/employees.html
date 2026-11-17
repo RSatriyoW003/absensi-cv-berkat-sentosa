@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Manajemen Karyawan & Akun Admin - Absensi CV Berkat Sentosa</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- SIDEBAR OVERLAY ADMIN -->
+    <div id="admin-sidebar-overlay" class="sidebar-overlay" onclick="closeAdminSidebar()"></div>
+
+    <!-- SIDEBAR DRAWER ADMIN -->
+    <aside id="admin-sidebar-drawer" class="sidebar-drawer">
+        <div class="sidebar-header sidebar-header-admin">
+            <button type="button" class="sidebar-close-btn" onclick="closeAdminSidebar()" title="Tutup Menu">&times;</button>
+            <div class="sidebar-user-info">
+                <div class="sidebar-user-avatar" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-color: rgba(255,255,255,0.3);">🛡️</div>
+                <div class="sidebar-user-meta">
+                    <div id="drawer-admin-name" class="sidebar-user-name">Memuat Nama...</div>
+                    <div id="drawer-admin-email" class="sidebar-user-email">Memuat Email...</div>
+                    <div class="sidebar-badges-row">
+                        <span class="drawer-badge-admin">🛡️ Super Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="sidebar-menu-category">
+                <span>📁</span>
+                <span>Ringkasan & Utama</span>
+            </div>
+            <a href="dashboard.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard Utama</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>👥</span>
+                <span>Manajemen SDM</span>
+            </div>
+            <a href="employees.html" class="sidebar-menu-item active active-admin">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Karyawan & Akun</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>⏰</span>
+                <span>Presensi & Operasional</span>
+            </div>
+            <a href="schedule.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">⏰</span>
+                    <span>Jadwal Kerja Kantor</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=approvals" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📝</span>
+                    <span>Persetujuan Izin</span>
+                </div>
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>⏰</span>
+                <span>Presensi & Operasional</span>
+            </div>
+            <a href="schedule.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">⏰</span>
+                    <span>Jadwal Kerja Kantor</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=approvals" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📝</span>
+                    <span>Persetujuan Izin</span>
+                </div>
+                <span id="drawer-badge-pending-leaves" class="sidebar-menu-badge" style="display: none;">0</span>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=rekap" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Rekap Presensi</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="offices.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">🏢</span>
+                    <span>Lokasi Kantor CBS</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>📈</span>
+                <span>Analisis Kinerja</span>
+            </div>
+            <a href="analytics.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Hasil Kedisiplinan</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            </button>
+            <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 8px;">
+                CV Berkat Sentosa v2.0
+            </div>
+        </div>
+    </aside>
+
+    <div class="page-container">
+        <div class="main-card wide-card">
+
+            <!-- TOP APP BAR ADMIN -->
+            <div class="top-app-bar">
+                <div class="top-app-bar-left">
+                    <button type="button" class="menu-toggle-btn" onclick="toggleAdminSidebar()" title="Buka Menu Admin" aria-label="Menu">
+                        ☰
+                    </button>
+                    <div>
+                        <div class="top-brand-title">Data Karyawan</div>
+                        <div class="top-brand-subtitle">CV Berkat Sentosa</div>
+                    </div>
+                </div>
+
+                <!-- DESKTOP NAVIGATION TABS ADMIN -->
+                <nav class="desktop-nav-links">
+                    <a href="dashboard.html" class="desktop-nav-tab">
+                        <span>📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="employees.html" class="desktop-nav-tab active active-admin">
+                        <span>👥</span>
+                        <span>Karyawan</span>
+                    </a>
+                    <a href="schedule.html" class="desktop-nav-tab">
+                        <span>⏰</span>
+                        <span>Jam Kerja</span>
+                    </a>
+                    <a href="offices.html" class="desktop-nav-tab">
+                        <span>🏢</span>
+                        <span>Lokasi CBS</span>
+                    </a>
+                    <a href="attendances.html" class="desktop-nav-tab">
+                        <span>📋</span>
+                        <span>Rekap & Izin</span>
+                    </a>
+                    <a href="analytics.html" class="desktop-nav-tab">
+                        <span>📊</span>
+                        <span>Kedisiplinan</span>
+                    </a>
+                </nav>
+
+                <div class="top-app-bar-right">
+                    <button id="btn-add-primary" type="button" class="top-action-btn-primary" onclick="handlePrimaryAdd()">➕ Tambah</button>
+                    <button type="button" class="top-action-btn-icon" onclick="refreshCurrentTab()" title="Muat Ulang Data">🔄</button>
+                    <button type="button" class="top-action-btn-logout desktop-only-btn" onclick="handleLogout('../login.html')" title="Keluar">
+                        🚪 Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- NOTIFIKASI ALERT -->
+            <div id="alert-box" style="display: none; margin-bottom: 16px;"></div>
+
+            <!-- TAB NAVIGASI: KARYAWAN vs ADMIN -->
+            <div class="tabs-nav">
+                <button type="button" id="tab-employee-btn" class="tab-btn active" onclick="switchTab('employee')">
+                    👥 Data Karyawan (User)
+                    <span id="badge-count-employees" class="badge badge-info" style="font-size: 11px; padding: 2px 8px;">0</span>
+                </button>
+                <button type="button" id="tab-admin-btn" class="tab-btn" onclick="switchTab('admin')">
+                    🛡️ Akun Administrator (Admin)
+                    <span id="badge-count-admins" class="badge badge-purple" style="font-size: 11px; padding: 2px 8px;">0</span>
+                </button>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 1: DATA KARYAWAN (USER)                         -->
+            <!-- ======================================================== -->
+            <div id="section-employees">
+
+                <!-- FORM TAMBAH KARYAWAN -->
+                <div id="add-employee-card" style="display: none; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 4px;">➕ Tambah Karyawan Baru</h3>
+                    <p style="font-size: 12px; color: #64748b; margin-bottom: 16px;">
+                        Masukkan data karyawan dan akun login untuk aplikasi presensi.
+                    </p>
+
+                    <form id="add-employee-form">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                            <div class="form-group">
+                                <label for="name">Nama Lengkap Karyawan</label>
+                                <input type="text" id="name" required placeholder="Contoh: Budi Santoso">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="employee_number">Nomor Karyawan (NIP/ID)</label>
+                                <input type="text" id="employee_number" required placeholder="Contoh: EMP-002">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                            <div class="form-group">
+                                <label for="email">Email / Gmail Karyawan (Login User)</label>
+                                <input type="email" id="email" required placeholder="Contoh: budi.karyawan@gmail.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Password Karyawan</label>
+                                <input type="password" id="password" required minlength="6" placeholder="Minimal 6 karakter">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+                            <div class="form-group">
+                                <label for="position">Jabatan / Posisi</label>
+                                <input type="text" id="position" required placeholder="Contoh: Staff IT">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="department">Departemen / Divisi</label>
+                                <input type="text" id="department" placeholder="Contoh: Operasional">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">No. Telepon / WhatsApp</label>
+                                <input type="tel" id="phone" placeholder="Contoh: 08123456789">
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="hideAddEmployeeForm()">Batal</button>
+                            <button type="submit" class="btn btn-success btn-sm">Simpan Karyawan</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- FORM EDIT KARYAWAN -->
+                <div id="edit-employee-card" style="display: none; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 18px; margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 4px;">✏️ Edit Data Karyawan</h3>
+                    <p style="font-size: 12px; color: #64748b; margin-bottom: 16px;">
+                        Ubah data diri, email login, atau reset password karyawan.
+                    </p>
+
+                    <form id="edit-employee-form">
+                        <input type="hidden" id="edit-id">
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                            <div class="form-group">
+                                <label for="edit-name">Nama Lengkap Karyawan</label>
+                                <input type="text" id="edit-name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="edit-employee_number">Nomor Karyawan</label>
+                                <input type="text" id="edit-employee_number" required>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                            <div class="form-group">
+                                <label for="edit-email">Email / Gmail Karyawan</label>
+                                <input type="email" id="edit-email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="edit-password">Password Baru Karyawan (Opsional)</label>
+                                <input type="password" id="edit-password" placeholder="Kosongkan jika password tidak diubah">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
+                            <div class="form-group">
+                                <label for="edit-position">Jabatan</label>
+                                <input type="text" id="edit-position" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="edit-department">Departemen</label>
+                                <input type="text" id="edit-department">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="edit-phone">No. Telepon</label>
+                                <input type="tel" id="edit-phone">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="edit-status">Status Akun</label>
+                                <select id="edit-status">
+                                    <option value="active">Aktif</option>
+                                    <option value="inactive">Nonaktif</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="hideEditEmployeeForm()">Batal</button>
+                            <button type="submit" class="btn btn-warning btn-sm">Update Karyawan</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- SEARCH BAR KARYAWAN -->
+                <div style="margin-bottom: 16px; display: flex; gap: 10px; align-items: center; max-width: 440px;">
+                    <input type="text" id="employee-search" placeholder="🔍 Cari nama, email, NIP, jabatan..." style="width: 100%; height: 38px; padding: 8px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; background: #ffffff;" oninput="filterEmployeeTable()">
+                </div>
+
+                <!-- TABEL KARYAWAN -->
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Karyawan</th>
+                                <th>Email (Login User)</th>
+                                <th>NIP/ID</th>
+                                <th>Jabatan</th>
+                                <th>Divisi</th>
+                                <th>Telepon</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employee-table-body">
+                            <tr>
+                                <td colspan="9" style="text-align: center; color: #64748b;">Memuat data karyawan...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 2: DATA ADMINISTRATOR (ADMIN)                   -->
+            <!-- ======================================================== -->
+            <div id="section-admins" style="display: none;">
+
+                <!-- FORM TAMBAH ADMIN -->
+                <div id="add-admin-card" style="display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 18px; margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 4px; color: #1e40af;">🛡️ Tambah Akun Administrator Baru</h3>
+                    <p style="font-size: 12px; color: #64748b; margin-bottom: 16px;">
+                        Admin memiliki hak akses penuh ke seluruh panel manajemen, lokasi, rekap, dan jadwal kerja.
+                    </p>
+
+                    <form id="add-admin-form">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                            <div class="form-group">
+                                <label for="admin-name">Nama Lengkap Administrator</label>
+                                <input type="text" id="admin-name" required placeholder="Contoh: Admin Operasional">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="admin-email">Email / Gmail Administrator</label>
+                                <input type="email" id="admin-email" required placeholder="Contoh: admin.utama@cvberkatsentosa.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="admin-password">Password Administrator</label>
+                                <input type="password" id="admin-password" required minlength="6" placeholder="Minimal 6 karakter">
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="hideAddAdminForm()">Batal</button>
+                            <button type="submit" class="btn btn-success btn-sm">Simpan Administrator</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- FORM EDIT ADMIN -->
+                <div id="edit-admin-card" style="display: none; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 18px; margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 4px;">✏️ Edit Akun Administrator</h3>
+                    <p style="font-size: 12px; color: #64748b; margin-bottom: 16px;">
+                        Ubah nama, email, atau reset password akun administrator.
+                    </p>
+
+                    <form id="edit-admin-form">
+                        <input type="hidden" id="edit-admin-id">
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                            <div class="form-group">
+                                <label for="edit-admin-name">Nama Administrator</label>
+                                <input type="text" id="edit-admin-name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="edit-admin-email">Email / Gmail</label>
+                                <input type="email" id="edit-admin-email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="edit-admin-password">Password Baru (Opsional)</label>
+                                <input type="password" id="edit-admin-password" placeholder="Kosongkan jika tidak diubah">
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="hideEditAdminForm()">Batal</button>
+                            <button type="submit" class="btn btn-warning btn-sm">Update Administrator</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- SEARCH BAR ADMIN -->
+                <div style="margin-bottom: 16px; display: flex; gap: 10px; align-items: center; max-width: 440px;">
+                    <input type="text" id="admin-search" placeholder="🔍 Cari nama atau email admin..." style="width: 100%; height: 38px; padding: 8px 14px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; background: #ffffff;" oninput="filterAdminTable()">
+                </div>
+
+                <!-- TABEL ADMINISTRATOR -->
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Administrator</th>
+                                <th>Email / Gmail Login</th>
+                                <th>Role</th>
+                                <th>Tanggal Dibuat</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body">
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: #64748b;">Memuat data administrator...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        const token = localStorage.getItem('api_token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user || user.role !== 'admin') {
+            window.location.href = '../login.html';
+        }
+
+        const alertBox = document.getElementById('alert-box');
+        let currentTab = 'employee';
+
+        let employeeList = [];
+        let adminList = [];
+
+        // Elements Employee
+        const employeeTableBody = document.getElementById('employee-table-body');
+        const addEmpCard = document.getElementById('add-employee-card');
+        const editEmpCard = document.getElementById('edit-employee-card');
+
+        // Elements Admin
+        const adminTableBody = document.getElementById('admin-table-body');
+        const addAdmCard = document.getElementById('add-admin-card');
+        const editAdmCard = document.getElementById('edit-admin-card');
+
+        function showAlert(type, message) {
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+            alertBox.innerHTML = message;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => { alertBox.style.display = 'none'; }, 6000);
+        }
+
+        // ==========================================================
+        // TAB SWITCHING
+        // ==========================================================
+        function switchTab(tab) {
+            currentTab = tab;
+            const empBtn = document.getElementById('tab-employee-btn');
+            const admBtn = document.getElementById('tab-admin-btn');
+            const secEmp = document.getElementById('section-employees');
+            const secAdm = document.getElementById('section-admins');
+            const btnPrimary = document.getElementById('btn-add-primary');
+
+            if (tab === 'employee') {
+                empBtn.classList.add('active');
+                admBtn.classList.remove('active');
+                secEmp.style.display = 'block';
+                secAdm.style.display = 'none';
+                btnPrimary.textContent = '+ Tambah Karyawan';
+            } else {
+                admBtn.classList.add('active');
+                empBtn.classList.remove('active');
+                secAdm.style.display = 'block';
+                secEmp.style.display = 'none';
+                btnPrimary.textContent = '+ Tambah Admin Baru';
+            }
+        }
+
+        function handlePrimaryAdd() {
+            if (currentTab === 'employee') {
+                showAddEmployeeForm();
+            } else {
+                showAddAdminForm();
+            }
+        }
+
+        function refreshCurrentTab() {
+            if (currentTab === 'employee') {
+                loadEmployees();
+            } else {
+                loadAdmins();
+            }
+        }
+
+        // ==========================================================
+        // KARYAWAN LOGIC
+        // ==========================================================
+        function showAddEmployeeForm() {
+            editEmpCard.style.display = 'none';
+            addEmpCard.style.display = 'block';
+            document.getElementById('name').focus();
+            window.scrollTo({ top: addEmpCard.offsetTop - 20, behavior: 'smooth' });
+        }
+
+        function hideAddEmployeeForm() {
+            addEmpCard.style.display = 'none';
+            document.getElementById('add-employee-form').reset();
+        }
+
+        function hideEditEmployeeForm() {
+            editEmpCard.style.display = 'none';
+            document.getElementById('edit-employee-form').reset();
+        }
+
+        function renderEmployeeTable(list) {
+            document.getElementById('badge-count-employees').textContent = employeeList.length;
+
+            if (list.length === 0) {
+                employeeTableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: #64748b;">Tidak ada data karyawan yang cocok.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            list.forEach((emp, idx) => {
+                const statusBadge = emp.status === 'active'
+                    ? '<span class="badge badge-success">Aktif</span>'
+                    : '<span class="badge badge-danger">Nonaktif</span>';
+
+                const avatarSrc = emp.photo_url || '';
+                const avatarHtml = avatarSrc
+                    ? `<img src="${avatarSrc}" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1.5px solid #3b82f6; flex-shrink: 0;">`
+                    : `<span style="width: 30px; height: 30px; border-radius: 50%; background: #e2e8f0; color: #475569; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0;">👤</span>`;
+
+                html += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                ${avatarHtml}
+                                <strong>${emp.user?.name || '-'}</strong>
+                            </div>
+                        </td>
+                        <td>${emp.user?.email || '-'}</td>
+                        <td><span style="font-family: monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">${emp.employee_number || '-'}</span></td>
+                        <td>${emp.position || '-'}</td>
+                        <td>${emp.department || '-'}</td>
+                        <td>${emp.phone || '-'}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <div style="display: flex; gap: 6px;">
+                                <button type="button" class="btn btn-outline btn-sm" onclick="editEmployee(${emp.id})">✏️ Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteEmployee(${emp.id}, '${emp.user?.name || 'Karyawan'}')">🗑️ Hapus</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            employeeTableBody.innerHTML = html;
+        }
+
+        function filterEmployeeTable() {
+            const q = (document.getElementById('employee-search').value || '').trim().toLowerCase();
+            if (!q) {
+                renderEmployeeTable(employeeList);
+                return;
+            }
+            const filtered = employeeList.filter(emp => {
+                const name = (emp.user?.name || '').toLowerCase();
+                const email = (emp.user?.email || '').toLowerCase();
+                const num = (emp.employee_number || '').toLowerCase();
+                const pos = (emp.position || '').toLowerCase();
+                const dept = (emp.department || '').toLowerCase();
+                return name.includes(q) || email.includes(q) || num.includes(q) || pos.includes(q) || dept.includes(q);
+            });
+            renderEmployeeTable(filtered);
+        }
+
+        async function loadEmployees() {
+            try {
+                employeeTableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: #64748b;">Memuat data karyawan...</td></tr>`;
+                const data = await apiRequest('/admin/employees');
+                employeeList = data.employees || [];
+                filterEmployeeTable();
+            } catch (err) {
+                console.error(err);
+                employeeTableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: #dc2626;">Gagal memuat: ${err.message}</td></tr>`;
+            }
+        }
+
+        function editEmployee(id) {
+            const emp = employeeList.find(e => e.id === id);
+            if (!emp) return;
+
+            addEmpCard.style.display = 'none';
+            editEmpCard.style.display = 'block';
+
+            document.getElementById('edit-id').value = emp.id;
+            document.getElementById('edit-name').value = emp.user?.name || '';
+            document.getElementById('edit-email').value = emp.user?.email || '';
+            document.getElementById('edit-password').value = '';
+            document.getElementById('edit-employee_number').value = emp.employee_number || '';
+            document.getElementById('edit-position').value = emp.position || '';
+            document.getElementById('edit-department').value = emp.department || '';
+            document.getElementById('edit-phone').value = emp.phone || '';
+            document.getElementById('edit-status').value = emp.status || 'active';
+
+            window.scrollTo({ top: editEmpCard.offsetTop - 20, behavior: 'smooth' });
+        }
+
+        async function deleteEmployee(id, name) {
+            if (!confirm(`Yakin ingin menghapus karyawan "${name}"? Akun login terkait juga akan dihapus permanen.`)) {
+                return;
+            }
+
+            try {
+                const res = await apiRequest(`/admin/employees/${id}`, { method: 'DELETE' });
+                showAlert('success', res.message || 'Karyawan berhasil dihapus.');
+                loadEmployees();
+            } catch (err) {
+                showAlert('danger', 'Gagal menghapus karyawan: ' + err.message);
+            }
+        }
+
+        document.getElementById('add-employee-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const payload = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value,
+                    employee_number: document.getElementById('employee_number').value,
+                    position: document.getElementById('position').value,
+                    department: document.getElementById('department').value || null,
+                    phone: document.getElementById('phone').value || null
+                };
+
+                const res = await apiRequest('/admin/employees', {
+                    method: 'POST',
+                    body: payload
+                });
+
+                showAlert('success', res.message || 'Karyawan baru berhasil ditambahkan.');
+                hideAddEmployeeForm();
+                loadEmployees();
+            } catch (err) {
+                showAlert('danger', 'Gagal menambahkan karyawan: ' + err.message);
+            }
+        });
+
+        document.getElementById('edit-employee-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+
+            try {
+                const payload = {
+                    name: document.getElementById('edit-name').value,
+                    email: document.getElementById('edit-email').value,
+                    employee_number: document.getElementById('edit-employee_number').value,
+                    position: document.getElementById('edit-position').value,
+                    department: document.getElementById('edit-department').value || null,
+                    phone: document.getElementById('edit-phone').value || null,
+                    status: document.getElementById('edit-status').value
+                };
+
+                const newPassword = document.getElementById('edit-password').value;
+                if (newPassword && newPassword.trim().length > 0) {
+                    payload.password = newPassword.trim();
+                }
+
+                const res = await apiRequest(`/admin/employees/${id}`, {
+                    method: 'PUT',
+                    body: payload
+                });
+
+                showAlert('success', res.message || 'Data karyawan berhasil diperbarui.');
+                hideEditEmployeeForm();
+                loadEmployees();
+            } catch (err) {
+                showAlert('danger', 'Gagal memperbarui karyawan: ' + err.message);
+            }
+        });
+
+        // ==========================================================
+        // ADMINISTRATOR LOGIC
+        // ==========================================================
+        function showAddAdminForm() {
+            editAdmCard.style.display = 'none';
+            addAdmCard.style.display = 'block';
+            document.getElementById('admin-name').focus();
+            window.scrollTo({ top: addAdmCard.offsetTop - 20, behavior: 'smooth' });
+        }
+
+        function hideAddAdminForm() {
+            addAdmCard.style.display = 'none';
+            document.getElementById('add-admin-form').reset();
+        }
+
+        function hideEditAdminForm() {
+            editAdmCard.style.display = 'none';
+            document.getElementById('edit-admin-form').reset();
+        }
+
+        function renderAdminTable(list) {
+            document.getElementById('badge-count-admins').textContent = adminList.length;
+
+            if (list.length === 0) {
+                adminTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b;">Tidak ada data administrator yang cocok.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            list.forEach((adm, idx) => {
+                const isCurrent = adm.id === user.id;
+                const createdAt = adm.created_at ? new Date(adm.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+
+                html += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>
+                            <strong>${adm.name}</strong>
+                            ${isCurrent ? '<span class="badge badge-success" style="font-size: 10px; margin-left: 6px;">Akun Anda</span>' : ''}
+                        </td>
+                        <td>${adm.email}</td>
+                        <td><span class="badge badge-purple">🛡️ Administrator</span></td>
+                        <td style="color: #64748b; font-size: 13px;">${createdAt}</td>
+                        <td>
+                            <div style="display: flex; gap: 6px;">
+                                <button type="button" class="btn btn-outline btn-sm" onclick="editAdmin(${adm.id})">✏️ Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteAdmin(${adm.id}, '${adm.name}')" ${isCurrent ? 'disabled title="Tidak dapat menghapus akun Anda sendiri"' : ''}>🗑️ Hapus</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            adminTableBody.innerHTML = html;
+        }
+
+        function filterAdminTable() {
+            const q = (document.getElementById('admin-search').value || '').trim().toLowerCase();
+            if (!q) {
+                renderAdminTable(adminList);
+                return;
+            }
+            const filtered = adminList.filter(adm => {
+                const name = (adm.name || '').toLowerCase();
+                const email = (adm.email || '').toLowerCase();
+                return name.includes(q) || email.includes(q);
+            });
+            renderAdminTable(filtered);
+        }
+
+        async function loadAdmins() {
+            try {
+                adminTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b;">Memuat data administrator...</td></tr>`;
+                const data = await apiRequest('/admin/admins');
+                adminList = data.admins || [];
+                filterAdminTable();
+            } catch (err) {
+                console.error(err);
+                adminTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #dc2626;">Gagal memuat: ${err.message}</td></tr>`;
+            }
+        }
+
+        function editAdmin(id) {
+            const adm = adminList.find(a => a.id === id);
+            if (!adm) return;
+
+            addAdmCard.style.display = 'none';
+            editAdmCard.style.display = 'block';
+
+            document.getElementById('edit-admin-id').value = adm.id;
+            document.getElementById('edit-admin-name').value = adm.name || '';
+            document.getElementById('edit-admin-email').value = adm.email || '';
+            document.getElementById('edit-admin-password').value = '';
+
+            window.scrollTo({ top: editAdmCard.offsetTop - 20, behavior: 'smooth' });
+        }
+
+        async function deleteAdmin(id, name) {
+            if (id === user.id) {
+                alert('Anda tidak dapat menghapus akun Anda sendiri yang sedang aktif digunakan.');
+                return;
+            }
+
+            if (!confirm(`Yakin ingin menghapus administrator "${name}"? Tindakan ini tidak dapat dibatalkan.`)) {
+                return;
+            }
+
+            try {
+                const res = await apiRequest(`/admin/admins/${id}`, { method: 'DELETE' });
+                showAlert('success', res.message || 'Akun administrator berhasil dihapus.');
+                loadAdmins();
+            } catch (err) {
+                showAlert('danger', 'Gagal menghapus administrator: ' + err.message);
+            }
+        }
+
+        document.getElementById('add-admin-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const payload = {
+                    name: document.getElementById('admin-name').value,
+                    email: document.getElementById('admin-email').value,
+                    password: document.getElementById('admin-password').value
+                };
+
+                const res = await apiRequest('/admin/admins', {
+                    method: 'POST',
+                    body: payload
+                });
+
+                showAlert('success', res.message || 'Akun administrator baru berhasil dibuat.');
+                hideAddAdminForm();
+                loadAdmins();
+            } catch (err) {
+                showAlert('danger', 'Gagal membuat administrator: ' + err.message);
+            }
+        });
+
+        document.getElementById('edit-admin-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-admin-id').value;
+
+            try {
+                const payload = {
+                    name: document.getElementById('edit-admin-name').value,
+                    email: document.getElementById('edit-admin-email').value
+                };
+
+                const newPassword = document.getElementById('edit-admin-password').value;
+                if (newPassword && newPassword.trim().length > 0) {
+                    payload.password = newPassword.trim();
+                }
+
+                const res = await apiRequest(`/admin/admins/${id}`, {
+                    method: 'PUT',
+                    body: payload
+                });
+
+                showAlert('success', res.message || 'Data administrator berhasil diperbarui.');
+
+                // Jika akun yang diedit adalah akun yang sedang aktif, perbarui localStorage dan sidebar
+                if (user && user.id == id) {
+                    user.name = payload.name;
+                    user.email = payload.email;
+                    localStorage.setItem('user', JSON.stringify(user));
+                    if (typeof syncSidebarUser === 'function') {
+                        syncSidebarUser();
+                    }
+                }
+
+                hideEditAdminForm();
+                loadAdmins();
+            } catch (err) {
+                showAlert('danger', 'Gagal memperbarui administrator: ' + err.message);
+            }
+        });
+
+        function toggleAdminSidebar() {
+            const drawer = document.getElementById('admin-sidebar-drawer');
+            if (drawer.classList.contains('open')) {
+                closeAdminSidebar();
+            } else {
+                openAdminSidebar();
+            }
+        }
+
+        function openAdminSidebar() {
+            document.getElementById('admin-sidebar-drawer').classList.add('open');
+            document.getElementById('admin-sidebar-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('sidebar-open');
+        }
+
+        function closeAdminSidebar() {
+            document.getElementById('admin-sidebar-drawer').classList.remove('open');
+            document.getElementById('admin-sidebar-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+            document.body.classList.remove('sidebar-open');
+        }
+
+        if (user) {
+            const dName = document.getElementById('drawer-admin-name');
+            const dEmail = document.getElementById('drawer-admin-email');
+            if (dName) dName.textContent = user.name || 'Administrator';
+            if (dEmail) dEmail.textContent = user.email || '-';
+        }
+
+        // Inisialisasi awal
+        loadEmployees();
+        loadAdmins();
+    </script>
+
+</body>
+
+</html>

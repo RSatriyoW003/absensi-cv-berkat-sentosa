@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Lokasi Kantor Pusat - CV Berkat Sentosa</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .coord-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        @media (max-width: 560px) {
+            .coord-grid {
+                grid-template-columns: 1fr !important;
+                gap: 12px;
+            }
+        }
+        .live-gmaps-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .live-gmaps-pill:hover {
+            background: #dbeafe;
+            color: #1e40af;
+            border-color: #93c5fd;
+        }
+        .swapped-coords-alert {
+            background: #fffbeb;
+            border: 1.5px solid #fde68a;
+            color: #92400e;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .quick-swap-btn {
+            background: #d97706;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .quick-swap-btn:hover {
+            background: #b45309;
+        }
+        .input-hint-box {
+            font-size: 11.5px;
+            color: #64748b;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR OVERLAY ADMIN -->
+    <div id="admin-sidebar-overlay" class="sidebar-overlay" onclick="closeAdminSidebar()"></div>
+
+    <!-- SIDEBAR DRAWER ADMIN -->
+    <aside id="admin-sidebar-drawer" class="sidebar-drawer">
+        <div class="sidebar-header sidebar-header-admin">
+            <button type="button" class="sidebar-close-btn" onclick="closeAdminSidebar()" title="Tutup Menu">&times;</button>
+            <div class="sidebar-user-info">
+                <div class="sidebar-user-avatar" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-color: rgba(255,255,255,0.3);">🛡️</div>
+                <div class="sidebar-user-meta">
+                    <div id="drawer-admin-name" class="sidebar-user-name">Memuat Nama...</div>
+                    <div id="drawer-admin-email" class="sidebar-user-email">Memuat Email...</div>
+                    <div class="sidebar-badges-row">
+                        <span class="drawer-badge-admin">🛡️ Super Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="sidebar-menu-category">
+                <span>📁</span>
+                <span>Ringkasan & Utama</span>
+            </div>
+            <a href="dashboard.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard Utama</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>👥</span>
+                <span>Manajemen SDM</span>
+            </div>
+            <a href="employees.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Karyawan & Akun</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>⏰</span>
+                <span>Presensi & Operasional</span>
+            </div>
+            <a href="schedule.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">⏰</span>
+                    <span>Jadwal Kerja Kantor</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=approvals" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📝</span>
+                    <span>Persetujuan Izin</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=rekap" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Rekap Presensi</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="offices.html" class="sidebar-menu-item active active-admin">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">🏢</span>
+                    <span>Lokasi Kantor CBS</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>📈</span>
+                <span>Analisis Kinerja</span>
+            </div>
+            <a href="analytics.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Hasil Kedisiplinan</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button type="button" class="sidebar-logout-btn" onclick="handleLogout('../login.html')">
+                <span>🚪</span>
+                <span>Keluar (Logout)</span>
+            </button>
+            <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 8px;">
+                CV Berkat Sentosa v2.0
+            </div>
+        </div>
+    </aside>
+
+    <div class="page-container">
+        <div class="main-card wide-card">
+
+            <!-- TOP APP BAR ADMIN -->
+            <div class="top-app-bar">
+                <div class="top-app-bar-left">
+                    <button type="button" class="menu-toggle-btn" onclick="toggleAdminSidebar()" title="Buka Menu Admin" aria-label="Menu">
+                        ☰
+                    </button>
+                    <div>
+                        <div class="top-brand-title">Lokasi Kantor CBS</div>
+                        <div class="top-brand-subtitle">CV Berkat Sentosa</div>
+                    </div>
+                </div>
+
+                <!-- DESKTOP NAVIGATION TABS ADMIN -->
+                <nav class="desktop-nav-links">
+                    <a href="dashboard.html" class="desktop-nav-tab">
+                        <span>📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="employees.html" class="desktop-nav-tab">
+                        <span>👥</span>
+                        <span>Karyawan</span>
+                    </a>
+                    <a href="schedule.html" class="desktop-nav-tab">
+                        <span>⏰</span>
+                        <span>Jam Kerja</span>
+                    </a>
+                    <a href="offices.html" class="desktop-nav-tab active active-admin">
+                        <span>🏢</span>
+                        <span>Lokasi CBS</span>
+                    </a>
+                    <a href="attendances.html" class="desktop-nav-tab">
+                        <span>📋</span>
+                        <span>Rekap & Izin</span>
+                    </a>
+                    <a href="analytics.html" class="desktop-nav-tab">
+                        <span>📊</span>
+                        <span>Kedisiplinan</span>
+                    </a>
+                </nav>
+
+                <div class="top-app-bar-right">
+                    <button type="button" class="top-action-btn-icon" onclick="loadOfficeData()" title="Muat Ulang Data">🔄</button>
+                    <button type="button" class="top-action-btn-logout desktop-only-btn" onclick="handleLogout('../login.html')" title="Keluar">
+                        🚪 Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- NOTIFIKASI -->
+            <div id="alert-box" style="display: none; padding: 12px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 13px;"></div>
+
+            <!-- DESKRIPSI RUANG LINGKUP TUNGGAL -->
+            <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                    <span style="font-size: 20px; line-height: 1;">🏢</span>
+                    <div>
+                        <strong style="color: #1e40af; font-size: 14px;">Konfigurasi Lokasi Tunggal Perusahaan</strong>
+                        <p style="margin: 4px 0 0 0; font-size: 12px; color: #3b82f6; line-height: 1.5;">
+                            Sistem presensi divalidasi khusus untuk lokasi kantor tunggal <strong>CV Berkat Sentosa</strong> sesuai ruang lingkup Capstone Project Charter. Karyawan wajib berada dalam batas radius meter yang ditentukan untuk melakukan Check-In dan Check-Out.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KARTU INFORMASI LOKASI AKTIF SAAT INI -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 20px;">
+                <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                    <div style="font-size: 12px; color: #64748b; margin-bottom: 4px;">Nama Entitas Kantor</div>
+                    <div id="info-office-name" style="font-size: 16px; font-weight: 700; color: #0f172a;">Memuat...</div>
+                    <div style="margin-top: 8px;">
+                        <span id="info-office-status" class="badge badge-success">Aktif</span>
+                    </div>
+                </div>
+
+                <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                    <div style="font-size: 12px; color: #64748b; margin-bottom: 4px;">Titik Koordinat GPS Tersimpan di Database</div>
+                    <div id="info-office-coords" style="font-size: 15px; font-weight: 700; color: #0f172a; font-family: monospace;">-</div>
+                    <div style="margin-top: 8px;">
+                        <a id="link-gmaps" href="#" target="_blank" class="attachment-badge-btn" style="display: inline-flex; align-items: center; gap: 6px;" title="Buka titik koordinat resmi yang sedang aktif di database">
+                            🗺️ Buka Titik Kantor Tersimpan di Google Maps
+                        </a>
+                    </div>
+                </div>
+
+                <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                    <div style="font-size: 12px; color: #64748b; margin-bottom: 4px;">Toleransi Radius Presensi</div>
+                    <div id="info-office-radius" style="font-size: 20px; font-weight: 800; color: #2563eb;">100 Meter</div>
+                    <div style="font-size: 11px; color: #64748b; margin-top: 4px;">Jarak maksimal karyawan dari titik pusat kantor</div>
+                </div>
+            </div>
+
+            <!-- FORM EDIT / KALIBRASI LOKASI KANTOR -->
+            <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h3 style="font-size: 16px; margin: 0; color: #0f172a;">⚙️ Kalibrasi Titik Koordinat & Radius Kantor</h3>
+                        <small style="color: #64748b;">Perbarui titik koordinat dan jangkauan meter untuk validasi presensi seluruh karyawan</small>
+                    </div>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="getCurrentLocation(event)" style="width: auto; gap: 6px; font-size: 12px;">
+                        📍 Kalibrasi dengan GPS Saya Sekarang
+                    </button>
+                </div>
+
+                <form id="office-form" onsubmit="handleOfficeSubmit(event)">
+                    <input type="hidden" id="office-id">
+
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label for="name" style="font-weight: 600; font-size: 13px; color: #334155;">Nama Kantor Resmi</label>
+                        <input type="text" id="name" required class="form-control" style="width: 100%; padding: 10px 12px;" value="Kantor CV Berkat Sentosa (Pusat)">
+                    </div>
+
+                    <div class="coord-grid">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="latitude" style="font-weight: 600; font-size: 13px; color: #334155; display: flex; justify-content: space-between;">
+                                <span>Titik Latitude</span>
+                                <span style="font-size: 11px; color: #64748b; font-weight: normal;">(Rentang: -90 s/d 90)</span>
+                            </label>
+                            <input type="text" inputmode="decimal" id="latitude" required class="form-control" style="width: 100%; padding: 10px 12px; font-family: monospace;" placeholder="-7.2575000">
+                            <div class="input-hint-box">
+                                💡 Bisa paste koordinat gabungan Maps langsung di kolom ini.
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="longitude" style="font-weight: 600; font-size: 13px; color: #334155; display: flex; justify-content: space-between;">
+                                <span>Titik Longitude</span>
+                                <span style="font-size: 11px; color: #64748b; font-weight: normal;">(Rentang: -180 s/d 180)</span>
+                            </label>
+                            <input type="text" inputmode="decimal" id="longitude" required class="form-control" style="width: 100%; padding: 10px 12px; font-family: monospace;" placeholder="112.7521000">
+                            <div class="input-hint-box">
+                                Contoh Surabaya/Jatim: <code>112.xxxxxxx</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DETEKSI KOORDINAT TERTUKAR -->
+                    <div id="swapped-coords-box" class="swapped-coords-alert" style="display: none;">
+                        <div>
+                            ⚠️ <strong>Perhatian:</strong> Nilai Latitude dan Longitude kemungkinan tertukar (Wilayah Indonesia umumnya Latitude negatif <code>-7.xxx</code> dan Longitude positif <code>112.xxx</code>).
+                        </div>
+                        <button type="button" class="quick-swap-btn" onclick="swapCoordinates()">
+                            🔄 Tukar Posisi Titik
+                        </button>
+                    </div>
+
+                    <!-- PRATINJAU LANGSUNG KE GOOGLE MAPS SEBELUM SIMPAN -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 10px 14px;">
+                        <div style="font-size: 12px; color: #475569;">
+                            🗺️ <strong>Pratinjau Koordinat Input:</strong>
+                            <span id="live-coords-text" style="font-family: monospace; color: #0f172a; margin-left: 4px; font-weight: 600;">-</span>
+                        </div>
+                        <a id="link-live-gmaps" href="#" target="_blank" class="live-gmaps-pill">
+                            🌐 Buka Pratinjau di Google Maps (Belum Disimpan)
+                        </a>
+                    </div>
+
+                    <div class="coord-grid">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="radius" style="font-weight: 600; font-size: 13px; color: #334155;">Batas Radius Valid (Meter)</label>
+                            <input type="number" id="radius" required value="100" min="1" max="500000" class="form-control" style="width: 100%; padding: 10px 12px;">
+                            <div class="input-hint-box">100 = 100 meter | 250 = 250 meter | 1000 = 1 km</div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="status" style="font-weight: 600; font-size: 13px; color: #334155;">Status Operasional</label>
+                            <select id="status" class="form-control" style="width: 100%; padding: 10px 12px;">
+                                <option value="active">Aktif (Karyawan Wajib Validasi Radius)</option>
+                                <option value="inactive">Nonaktif</option>
+                            </select>
+                            <div class="input-hint-box">Pilih Aktif agar otomatis digunakan sistem presensi karyawan.</div>
+                        </div>
+                    </div>
+
+                    <!-- FEEDBACK INLINE TEPAT DI ATAS TOMBOL SIMPAN -->
+                    <div id="form-feedback" style="display: none; padding: 10px 14px; border-radius: 8px; margin-top: 14px; margin-bottom: 14px; font-size: 13px; line-height: 1.4;"></div>
+
+                    <div style="display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-top: 16px;">
+                        <button type="button" id="btn-reset-office" class="btn btn-outline btn-sm" onclick="loadOfficeData()" style="width: auto; padding: 9px 18px;">
+                            🔄 Reset Formulir
+                        </button>
+                        <button type="submit" id="btn-save-office" class="btn btn-primary btn-sm" style="width: auto; padding: 9px 24px; font-weight: 700;">
+                            💾 Simpan Perubahan Lokasi ke Database
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script src="../js/api.js"></script>
+    <script>
+        const token = getApiToken();
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user || user.role !== 'admin') {
+            window.location.href = '../login.html';
+        }
+
+        const alertBox = document.getElementById('alert-box');
+        let currentOfficeId = null;
+
+        function showAlert(type, message) {
+            if (!alertBox) return;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+            alertBox.innerHTML = message;
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 7000);
+        }
+
+        function showFormFeedback(type, message) {
+            const fb = document.getElementById('form-feedback');
+            if (!fb) return;
+            let bg = '#eff6ff', border = '#bfdbfe', text = '#1e40af';
+            if (type === 'success') { bg = '#f0fdf4'; border = '#86efac'; text = '#166534'; }
+            else if (type === 'danger') { bg = '#fef2f2'; border = '#fca5a5'; text = '#991b1b'; }
+            else if (type === 'info') { bg = '#eff6ff'; border = '#93c5fd'; text = '#1e40af'; }
+            
+            fb.style.display = 'block';
+            fb.style.background = bg;
+            fb.style.border = `1.5px solid ${border}`;
+            fb.style.color = text;
+            fb.innerHTML = message;
+        }
+
+        function hideFormFeedback() {
+            const fb = document.getElementById('form-feedback');
+            if (fb) fb.style.display = 'none';
+        }
+
+        function renderOfficeUI(office) {
+            if (!office) return;
+            currentOfficeId = office.id;
+            document.getElementById('office-id').value = office.id || '';
+            document.getElementById('name').value = office.name || 'Kantor CV Berkat Sentosa (Pusat)';
+            
+            const latVal = typeof office.latitude === 'number' ? office.latitude : parseFloat(office.latitude);
+            const lngVal = typeof office.longitude === 'number' ? office.longitude : parseFloat(office.longitude);
+
+            document.getElementById('latitude').value = !isNaN(latVal) ? latVal.toString() : '';
+            document.getElementById('longitude').value = !isNaN(lngVal) ? lngVal.toString() : '';
+            document.getElementById('radius').value = office.radius || 100;
+            document.getElementById('status').value = office.status || 'active';
+
+            // Update Visual Summary Cards
+            document.getElementById('info-office-name').textContent = office.name || 'Kantor CV Berkat Sentosa (Pusat)';
+            if (!isNaN(latVal) && !isNaN(lngVal)) {
+                document.getElementById('info-office-coords').textContent = `${latVal.toFixed(6)}, ${lngVal.toFixed(6)}`;
+                const mapsLink = document.getElementById('link-gmaps');
+                if (mapsLink) {
+                    mapsLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(latVal + ',' + lngVal)}`;
+                    mapsLink.title = 'Buka koordinat kantor resmi yang tersimpan di Google Maps';
+                }
+            }
+            
+            document.getElementById('info-office-radius').textContent = `${office.radius} Meter`;
+            
+            const statusBadge = document.getElementById('info-office-status');
+            if (statusBadge) {
+                if (office.status === 'active') {
+                    statusBadge.className = 'badge badge-success';
+                    statusBadge.textContent = 'Aktif Digunakan';
+                } else {
+                    statusBadge.className = 'badge badge-danger';
+                    statusBadge.textContent = 'Nonaktif';
+                }
+            }
+
+            updateLivePreview();
+        }
+
+        function checkSwappedCoordinates(lat, lng) {
+            const swapBox = document.getElementById('swapped-coords-box');
+            if (!swapBox) return;
+            // Di Indonesia: Latitude berkisar antara -11 sampai 6, Longitude antara 95 sampai 141.
+            // Jika Latitude > 50 dan Longitude < 10, kemungkinan tertukar.
+            if ((lat > 50 && lng < 10) || (lat > 90)) {
+                swapBox.style.display = 'flex';
+            } else {
+                swapBox.style.display = 'none';
+            }
+        }
+
+        function swapCoordinates() {
+            const latInput = document.getElementById('latitude');
+            const lngInput = document.getElementById('longitude');
+            const temp = latInput.value;
+            latInput.value = lngInput.value;
+            lngInput.value = temp;
+            updateLivePreview();
+            showFormFeedback('info', '🔄 Posisi Latitude dan Longitude telah ditukar.');
+        }
+
+        function updateLivePreview() {
+            const latRaw = document.getElementById('latitude').value.replace(',', '.').trim();
+            const lngRaw = document.getElementById('longitude').value.replace(',', '.').trim();
+            const liveCoordsText = document.getElementById('live-coords-text');
+            const liveLink = document.getElementById('link-live-gmaps');
+
+            const lat = parseFloat(latRaw);
+            const lng = parseFloat(lngRaw);
+
+            if (!isNaN(lat) && !isNaN(lng)) {
+                if (liveCoordsText) liveCoordsText.textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                if (liveLink) {
+                    liveLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lat + ',' + lng)}`;
+                    liveLink.style.opacity = '1';
+                    liveLink.style.pointerEvents = 'auto';
+                }
+                checkSwappedCoordinates(lat, lng);
+            } else {
+                if (liveCoordsText) liveCoordsText.textContent = '-';
+                if (liveLink) {
+                    liveLink.style.opacity = '0.5';
+                    liveLink.style.pointerEvents = 'none';
+                }
+                const swapBox = document.getElementById('swapped-coords-box');
+                if (swapBox) swapBox.style.display = 'none';
+            }
+        }
+
+        // Listener Smart Paste & Input
+        const latInput = document.getElementById('latitude');
+        const lngInput = document.getElementById('longitude');
+
+        latInput.addEventListener('paste', (e) => {
+            const pasteText = (e.clipboardData || window.clipboardData).getData('text');
+            if (pasteText && (pasteText.includes(',') || pasteText.includes(' ') || pasteText.includes('\t'))) {
+                const parts = pasteText.split(/[,\s]+/).map(p => p.trim()).filter(Boolean);
+                if (parts.length >= 2) {
+                    const pLat = parts[0].replace(',', '.');
+                    const pLng = parts[1].replace(',', '.');
+                    if (!isNaN(parseFloat(pLat)) && !isNaN(parseFloat(pLng))) {
+                        e.preventDefault();
+                        latInput.value = pLat;
+                        lngInput.value = pLng;
+                        updateLivePreview();
+                        showFormFeedback('info', '📋 Koordinat gabungan dari Google Maps berhasil dipisahkan menjadi Latitude dan Longitude.');
+                        return;
+                    }
+                }
+            }
+        });
+
+        latInput.addEventListener('input', () => {
+            latInput.value = latInput.value.replace(',', '.');
+            updateLivePreview();
+        });
+
+        lngInput.addEventListener('input', () => {
+            lngInput.value = lngInput.value.replace(',', '.');
+            updateLivePreview();
+        });
+
+        async function loadOfficeData() {
+            hideFormFeedback();
+            try {
+                const res = await apiRequest('/admin/offices');
+                const office = res.office || (res.offices && res.offices[0]);
+
+                if (!office) {
+                    showAlert('warning', 'Data kantor belum tersedia di server.');
+                    return;
+                }
+
+                renderOfficeUI(office);
+
+            } catch (err) {
+                console.error(err);
+                showAlert('danger', 'Gagal memuat konfigurasi lokasi kantor: ' + err.message);
+            }
+        }
+
+        function getCurrentLocation(event) {
+            if (!navigator.geolocation) {
+                alert('Browser Anda tidak mendukung fitur Geolocation.');
+                return;
+            }
+
+            const btn = event ? event.currentTarget || event.target : document.querySelector('button[onclick*="getCurrentLocation"]');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '📡 Membaca GPS HP...';
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    document.getElementById('latitude').value = pos.coords.latitude.toFixed(7);
+                    document.getElementById('longitude').value = pos.coords.longitude.toFixed(7);
+                    updateLivePreview();
+                    const msg = `📍 Koordinat GPS HP berhasil disalin: (${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}) Akurasi: ±${Math.round(pos.coords.accuracy)}m. Klik "Simpan Perubahan Lokasi ke Database" untuk menerapkan.`;
+                    showFormFeedback('info', msg);
+                    showAlert('success', msg);
+                },
+                (err) => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    alert('Gagal membaca GPS: ' + err.message);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+            );
+        }
+
+        async function handleOfficeSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-office');
+            const btnReset = document.getElementById('btn-reset-office');
+
+            const latRaw = document.getElementById('latitude').value.replace(',', '.').trim();
+            const lngRaw = document.getElementById('longitude').value.replace(',', '.').trim();
+            const radiusRaw = document.getElementById('radius').value.trim();
+            const name = document.getElementById('name').value.trim();
+            const status = document.getElementById('status').value;
+
+            const lat = parseFloat(latRaw);
+            const lng = parseFloat(lngRaw);
+            const radius = parseInt(radiusRaw, 10);
+
+            // Validasi di sisi klien
+            if (isNaN(lat)) {
+                showFormFeedback('danger', '❌ Nilai Latitude tidak valid. Masukkan angka desimal (contoh: -7.2575000).');
+                return;
+            }
+            if (lat < -90 || lat > 90) {
+                showFormFeedback('danger', '❌ Nilai Latitude harus berada di antara rentang -90 hingga 90.');
+                return;
+            }
+            if (isNaN(lng)) {
+                showFormFeedback('danger', '❌ Nilai Longitude tidak valid. Masukkan angka desimal (contoh: 112.7521000).');
+                return;
+            }
+            if (lng < -180 || lng > 180) {
+                showFormFeedback('danger', '❌ Nilai Longitude harus berada di antara rentang -180 hingga 180.');
+                return;
+            }
+            if (isNaN(radius) || radius < 1) {
+                showFormFeedback('danger', '❌ Batas radius presensi minimal adalah 1 meter.');
+                return;
+            }
+
+            btn.disabled = true;
+            if (btnReset) btnReset.disabled = true;
+            btn.textContent = '⏳ Menyimpan ke Database...';
+            showFormFeedback('info', '⏳ Sedang menyimpan titik koordinat kantor ke database server...');
+
+            const payload = {
+                name: name,
+                latitude: lat,
+                longitude: lng,
+                radius: radius,
+                status: status
+            };
+
+            try {
+                const endpoint = currentOfficeId ? `/admin/offices/${currentOfficeId}` : '/admin/office';
+                const method = 'PUT';
+
+                const res = await apiRequest(endpoint, {
+                    method: method,
+                    body: payload
+                });
+
+                const savedOffice = res.office || payload;
+                if (savedOffice.id) currentOfficeId = savedOffice.id;
+
+                // Perbarui UI langsung dari data hasil simpan database (cepat, tidak perlu roundtrip GET tambahan)
+                renderOfficeUI(savedOffice);
+
+                const successMsg = '✅ <strong>Berhasil Disimpan!</strong> Koordinat kantor CV Berkat Sentosa telah diperbarui di database dan langsung aktif digunakan untuk presensi seluruh karyawan.';
+                showFormFeedback('success', successMsg);
+                showAlert('success', successMsg);
+
+                // Auto-scroll ke ringkasan koordinat jika pada layar smartphone
+                const infoCard = document.getElementById('info-office-coords');
+                if (infoCard && window.innerWidth < 768) {
+                    infoCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+
+            } catch (err) {
+                console.error(err);
+                const errMsg = '❌ Gagal menyimpan konfigurasi kantor: ' + err.message;
+                showFormFeedback('danger', errMsg);
+                showAlert('danger', errMsg);
+            } finally {
+                btn.disabled = false;
+                if (btnReset) btnReset.disabled = false;
+                btn.textContent = '💾 Simpan Perubahan Lokasi ke Database';
+            }
+        }
+
+        function toggleAdminSidebar() {
+            const drawer = document.getElementById('admin-sidebar-drawer');
+            if (drawer.classList.contains('open')) {
+                closeAdminSidebar();
+            } else {
+                openAdminSidebar();
+            }
+        }
+
+        function openAdminSidebar() {
+            document.getElementById('admin-sidebar-drawer').classList.add('open');
+            document.getElementById('admin-sidebar-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('sidebar-open');
+        }
+
+        function closeAdminSidebar() {
+            document.getElementById('admin-sidebar-drawer').classList.remove('open');
+            document.getElementById('admin-sidebar-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+            document.body.classList.remove('sidebar-open');
+        }
+
+        if (user) {
+            const dName = document.getElementById('drawer-admin-name');
+            const dEmail = document.getElementById('drawer-admin-email');
+            if (dName) dName.textContent = user.name || 'Administrator';
+            if (dEmail) dEmail.textContent = user.email || '-';
+        }
+
+        loadOfficeData();
+    </script>
+
+</body>
+</html>

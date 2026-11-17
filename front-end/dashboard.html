@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Karyawan - Absensi CV Berkat Sentosa</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Absensi CBS">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="page-container">
+        <div class="main-card wide-card">
+
+            <!-- TOP APP BAR (MOBILE & DESKTOP) -->
+            <div class="top-app-bar">
+                <div class="top-app-bar-left">
+                    <button type="button" class="menu-toggle-btn" onclick="toggleSidebar()" title="Buka Menu Samping"
+                        aria-label="Menu">
+                        ☰
+                    </button>
+                    <div style="cursor: pointer;" onclick="switchView('presensi')">
+                        <div class="top-brand-title">Absensi CBS</div>
+                        <div class="top-brand-subtitle">CV Berkat Sentosa</div>
+                    </div>
+                </div>
+
+                <!-- DESKTOP NAVIGATION TABS (MUNCUL DI LAYAR DESKTOP/LAPTOP) -->
+                <nav class="desktop-nav-links">
+                    <button type="button" id="desk-nav-presensi" class="desktop-nav-tab active"
+                        onclick="switchView('presensi')">
+                        <span>🏠</span>
+                        <span>Presensi Hari Ini</span>
+                    </button>
+                    <button type="button" id="desk-nav-leave" class="desktop-nav-tab" onclick="openLeaveModal()">
+                        <span>📝</span>
+                        <span>Ajukan Izin / Sakit</span>
+                    </button>
+                    <button type="button" id="desk-nav-history" class="desktop-nav-tab" onclick="switchView('history')">
+                        <span>📅</span>
+                        <span>Riwayat Kehadiran</span>
+                    </button>
+                    <button type="button" id="desk-nav-profile" class="desktop-nav-tab" onclick="switchView('profile')">
+                        <span>👤</span>
+                        <span>Profil Saya</span>
+                    </button>
+                </nav>
+
+                <div class="top-app-bar-right">
+                    <button type="button" class="top-avatar-btn" onclick="switchView('profile')"
+                        title="Buka Profil Karyawan">
+                        <img id="top-bar-avatar-img" class="top-avatar-thumb" src="" alt="Avatar"
+                            style="display: none;">
+                        <span id="top-bar-avatar-placeholder" class="top-avatar-thumb">👤</span>
+                        <span id="top-bar-user-name"
+                            style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Karyawan</span>
+                    </button>
+                    <button type="button" class="btn btn-outline btn-sm desktop-only-btn"
+                        onclick="handleLogout('login.html')" title="Keluar Akun"
+                        style="border-color: #fca5a5; color: #dc2626; padding: 6px 12px;">
+                        🚪 Keluar
+                    </button>
+                </div>
+            </div>
+
+            <!-- SIDEBAR OVERLAY -->
+            <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+            <!-- SIDEBAR DRAWER (MENU SAMPING MOBILE & TABLET) -->
+            <aside id="sidebar-drawer" class="sidebar-drawer">
+                <div class="sidebar-header">
+                    <button type="button" class="sidebar-close-btn" onclick="closeSidebar()"
+                        title="Tutup Menu">&times;</button>
+                    <div class="sidebar-user-info">
+                        <div class="profile-avatar-wrapper"
+                            style="width: 54px; height: 54px; cursor: pointer; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 4px 12px rgba(0,0,0,0.25);"
+                            onclick="switchView('profile'); closeSidebar();" title="Lihat Profil">
+                            <img id="drawer-avatar-img" class="profile-avatar-img" src="" alt="Foto Profil"
+                                style="display: none;">
+                            <div id="drawer-avatar-placeholder" class="profile-avatar-placeholder"
+                                style="font-size: 20px;">👤</div>
+                        </div>
+                        <div class="sidebar-user-meta">
+                            <div id="drawer-user-name" class="sidebar-user-name">Memuat Nama...</div>
+                            <div id="drawer-user-email" class="sidebar-user-email">-</div>
+                            <div class="sidebar-badges-row">
+                                <span id="drawer-role-badge" class="drawer-badge-role">Karyawan</span>
+                                <span id="drawer-status-badge" class="drawer-badge-status">Aktif</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <div class="sidebar-menu-category">
+                        <span>🧭</span>
+                        <span>Navigasi Utama</span>
+                    </div>
+                    <button type="button" id="sidebar-item-presensi" class="sidebar-menu-item active"
+                        onclick="switchView('presensi'); closeSidebar();">
+                        <div class="sidebar-menu-item-left">
+                            <span class="sidebar-menu-icon">🏠</span>
+                            <span>Presensi Hari Ini</span>
+                        </div>
+                        <span class="sidebar-chevron">›</span>
+                    </button>
+                    <button type="button" id="sidebar-item-profile" class="sidebar-menu-item"
+                        onclick="switchView('profile'); closeSidebar();">
+                        <div class="sidebar-menu-item-left">
+                            <span class="sidebar-menu-icon">👤</span>
+                            <span>Profil Karyawan</span>
+                        </div>
+                        <span class="sidebar-chevron">›</span>
+                    </button>
+                    <button type="button" id="sidebar-item-history" class="sidebar-menu-item"
+                        onclick="switchView('history'); closeSidebar();">
+                        <div class="sidebar-menu-item-left">
+                            <span class="sidebar-menu-icon">📅</span>
+                            <span>Riwayat Kehadiran</span>
+                        </div>
+                        <span class="sidebar-chevron">›</span>
+                    </button>
+                    <button type="button" class="sidebar-menu-item" onclick="closeSidebar(); openLeaveModal();">
+                        <div class="sidebar-menu-item-left">
+                            <span class="sidebar-menu-icon">📝</span>
+                            <span>Ajukan Izin / Sakit</span>
+                        </div>
+                        <span class="sidebar-chevron">›</span>
+                    </button>
+
+                    <div class="sidebar-menu-category" style="margin-top: 8px;">
+                        <span>⚙️</span>
+                        <span>Pengaturan Akun</span>
+                    </div>
+                    <button type="button" class="sidebar-menu-item" onclick="closeSidebar(); openProfileModal();">
+                        <div class="sidebar-menu-item-left">
+                            <span class="sidebar-menu-icon">✏️</span>
+                            <span>Edit Profil & Foto</span>
+                        </div>
+                        <span class="sidebar-chevron">›</span>
+                    </button>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <button type="button" class="sidebar-logout-btn" onclick="handleLogout('login.html')">
+                        <span>🚪</span>
+                        <span>Keluar (Logout)</span>
+                    </button>
+                    <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 8px;">
+                        CV Berkat Sentosa v2.0
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ======================================================== -->
+            <!-- VIEW 1: PRESENSI & ABSENSI HARI INI                     -->
+            <!-- ======================================================== -->
+            <div id="view-presensi" class="view-pane active">
+
+                <!-- GREETING & INFO JADWAL SINGKAT -->
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div id="greeting-avatar-thumb" class="top-avatar-thumb"
+                            style="width: 36px; height: 36px; font-size: 15px; cursor: pointer;"
+                            onclick="switchView('profile')" title="Buka Profil">
+                            👤
+                        </div>
+                        <div>
+                            <div style="font-size: 14px; font-weight: 700; color: #0f172a;">
+                                Halo, <span id="greeting-user-name">Karyawan</span> 👋
+                            </div>
+                            <div id="greeting-subinfo" style="font-size: 11px; color: #64748b;">
+                                Staff • Operasional
+                            </div>
+                        </div>
+                    </div>
+                    <div id="schedule-badge" class="badge badge-info" style="font-size: 11px;">
+                        ⏰ Jadwal: Memuat...
+                    </div>
+                </div>
+
+                <!-- BANNER NOTIFIKASI / KETERANGAN STATUS -->
+                <div id="status-banner" style="display: none;"></div>
+
+                <!-- STATUS PRESENSI HARI INI -->
+                <div
+                    style="border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 16px; background: white; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                        <h3 style="font-size: 15px; margin: 0; color: #0f172a;">📍 Presensi Hari Ini</h3>
+                        <button type="button" class="btn btn-outline btn-sm"
+                            style="font-size: 11px; padding: 4px 8px; width: auto;" onclick="loadDashboard()">
+                            🔄 Segarkan
+                        </button>
+                    </div>
+
+                    <div id="attendance-summary" style="margin-bottom: 16px;">
+                        <div style="color: #64748b; font-size: 13px;">Memeriksa status kehadiran...</div>
+                    </div>
+
+                    <!-- VALIDASI LOKASI KANTOR TUNGGAL CV BERKAT SENTOSA -->
+                    <div id="branch-selection-container"
+                        style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; margin-bottom: 16px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                            <div>
+                                <div
+                                    style="display: flex; align-items: center; gap: 6px; font-weight: 700; color: #1e293b; font-size: 13px;">
+                                    <span>🏢</span>
+                                    <span id="office-name-display">Kantor CV Berkat Sentosa (Pusat)</span>
+                                </div>
+                                <div id="office-info-detail" style="font-size: 11px; color: #64748b; margin-top: 3px;">
+                                    Lokasi Kantor Pusat • Batas Radius Presensi: 100 meter
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                                <a id="link-employee-office-map" href="#" target="_blank" class="attachment-badge-btn"
+                                    style="display: none; font-size: 11px; padding: 5px 10px; text-decoration: none;"
+                                    title="Buka lokasi kantor di Google Maps">
+                                    🗺️ Lokasi di Maps
+                                </a>
+                                <button type="button" id="btn-check-distance" class="btn btn-outline btn-sm"
+                                    style="width: auto; padding: 6px 12px; font-size: 12px;"
+                                    onclick="checkCurrentGpsDistance()">
+                                    🔍 Cek Jarak GPS Saya
+                                </button>
+                            </div>
+                        </div>
+                        <div id="gps-check-status" style="font-size: 11px; color: #64748b; margin-top: 6px;"></div>
+
+                        <!-- HASIL CEK JARAK GPS REAL-TIME -->
+                        <div id="gps-distance-result"
+                            style="display: none; margin-top: 10px; padding: 12px; border-radius: 6px; font-size: 12px; background: #ffffff; border: 1px solid #cbd5e1;">
+                        </div>
+                    </div>
+
+                    <!-- TOMBOL AKSI PRESENSI & IZIN -->
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <button id="attendance-button" type="button" class="btn btn-success"
+                            style="font-size: 15px; padding: 14px; font-weight: 600;">
+                            Memuat...
+                        </button>
+                        <button id="btn-request-leave" type="button" class="btn btn-outline"
+                            style="font-size: 14px; padding: 11px; border-color: #3b82f6; color: #1d4ed8; background: #eff6ff;"
+                            onclick="openLeaveModal()">
+                            📝 Ajukan Izin Tidak Masuk Kerja (Leave / Sakit)
+                        </button>
+                    </div>
+                </div>
+            </div> <!-- Penutup #view-presensi -->
+
+            <!-- ======================================================== -->
+            <!-- VIEW 2: PROFIL LENGKAP KARYAWAN (HALAMAN KHUSUS)       -->
+            <!-- ======================================================== -->
+            <div id="view-profile" class="view-pane">
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h3 style="font-size: 16px; margin: 0; color: #0f172a;">👤 Profil Karyawan</h3>
+                        <small style="color: #64748b;">Data identitas & status kepegawaian Anda di CV Berkat
+                            Sentosa</small>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-outline btn-sm" style="width: auto; padding: 7px 12px;"
+                            onclick="loadProfile()">
+                            🔄 Segarkan
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm"
+                            style="width: auto; padding: 7px 14px; gap: 6px;" onclick="openProfileModal()">
+                            ✏️ Edit Profil & Foto
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KARTU PROFIL LENGKAP -->
+                <div id="user-info" class="profile-card">
+                    <!-- Header Profil: Avatar, Nama, Status -->
+                    <div class="profile-header-layout">
+                        <!-- Avatar Foto Profil -->
+                        <div class="profile-avatar-wrapper" onclick="openProfileModal()"
+                            title="Klik untuk ganti foto profil">
+                            <img id="profile-avatar-img" class="profile-avatar-img" src="" alt="Foto Profil"
+                                style="display: none;">
+                            <div id="profile-avatar-placeholder" class="profile-avatar-placeholder">👤</div>
+                            <div class="profile-avatar-edit-badge" title="Ganti Foto">📷</div>
+                        </div>
+
+                        <!-- Nama, Role & Jabatan -->
+                        <div style="flex: 1; min-width: 200px;">
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <h3 id="user-name" style="margin: 0; font-size: 18px; color: #0f172a;">Memuat Nama...
+                                </h3>
+                                <span id="role-badge" class="badge badge-info">Karyawan</span>
+                                <span id="profile-status-badge" class="badge badge-success">Aktif</span>
+                            </div>
+                            <div id="user-subinfo" style="font-size: 13px; color: #64748b; margin-top: 4px;">
+                                <span id="profile-header-position">-</span> • <span id="profile-header-dept">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grid Data Lengkap Profil Karyawan (8 Komponen) -->
+                    <div class="profile-details-grid">
+                        <div class="profile-detail-item">
+                            <div class="profile-detail-label">🏷️ NIP / ID Karyawan</div>
+                            <div id="profile-emp-number" class="profile-detail-value">-</div>
+                        </div>
+                        <div class="profile-detail-item">
+                            <div class="profile-detail-label">✉️ Email (Login User)</div>
+                            <div id="profile-email" class="profile-detail-value">-</div>
+                        </div>
+                        <div class="profile-detail-item">
+                            <div class="profile-detail-label">💼 Jabatan</div>
+                            <div id="profile-position" class="profile-detail-value">-</div>
+                        </div>
+                        <div class="profile-detail-item">
+                            <div class="profile-detail-label">🏢 Divisi / Departemen</div>
+                            <div id="profile-department" class="profile-detail-value">-</div>
+                        </div>
+                        <div class="profile-detail-item">
+                            <div class="profile-detail-label">📞 Nomor Telepon</div>
+                            <div id="profile-phone" class="profile-detail-value">-</div>
+                        </div>
+                        <div class="profile-detail-item">
+                            <div class="profile-detail-label">🔰 Status Kepegawaian</div>
+                            <div id="profile-status-text" class="profile-detail-value" style="color: #16a34a;">Aktif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 16px; display: flex; gap: 8px; justify-content: flex-end;">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="switchView('presensi')"
+                            style="width: auto;">
+                            ⬅ Kembali ke Presensi
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- VIEW 3: RIWAYAT LENGKAP KEHADIRAN                      -->
+            <!-- ======================================================== -->
+            <div id="view-history" class="view-pane">
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h3 style="font-size: 16px; margin: 0; color: #0f172a;">📅 Riwayat Kehadiran</h3>
+                        <small style="color: #64748b;">Catatan absensi, jam masuk, jam pulang & izin Anda</small>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="switchView('presensi')">
+                            ⬅ Presensi
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="loadHistory()">
+                            🔄 Segarkan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAMPILAN TABEL UNTUK DESKTOP / LAPTOP -->
+                <div class="table-responsive table-desktop-view">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Status Presensi</th>
+                                <th>Persetujuan</th>
+                                <th>Check-In</th>
+                                <th>Check-Out</th>
+                                <th>Lokasi Kantor</th>
+                                <th>Jarak</th>
+                                <th>Keterangan & Bukti</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body">
+                            <tr>
+                                <td colspan="8" style="text-align: center; color: #64748b;">Memuat riwayat kehadiran...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- TAMPILAN KARTU RAMAH HP (ANDROID & IOS) -->
+                <div id="mobile-history-cards" class="mobile-history-list">
+                    <div style="text-align: center; color: #64748b; font-size: 13px; padding: 20px;">
+                        Memuat data riwayat...
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- MODAL PENGAJUAN IZIN TIDAK MASUK KERJA -->
+    <div id="leave-modal" class="modal-overlay" onclick="handleModalBackdropClick(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <h3 style="margin: 0; font-size: 17px; color: #0f172a;">📝 Pengajuan Izin Tidak Masuk Kerja</h3>
+                    <small style="color: #64748b;">CV Berkat Sentosa - Formulir Ketidakhadiran Resmi</small>
+                </div>
+                <button type="button" class="modal-close" onclick="closeLeaveModal()" title="Tutup">&times;</button>
+            </div>
+
+            <!-- ALERT ERROR / INFO MODAL -->
+            <div id="leave-modal-alert"
+                style="display: none; padding: 10px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 14px;">
+            </div>
+
+            <form id="leave-form" onsubmit="handleLeaveSubmit(event)">
+                <div class="form-group">
+                    <label for="leave-date" style="font-weight: 600;">📅 Tanggal Izin</label>
+                    <input type="date" id="leave-date" class="form-control" required style="width: 100%;">
+                    <small style="color: #64748b; font-size: 11px;">Pilih tanggal izin tidak masuk kerja.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="leave-type" style="font-weight: 600;">📋 Jenis Ketidakhadiran</label>
+                    <select id="leave-type" class="form-control" required style="width: 100%;">
+                        <option value="leave">🔵 Izin Tidak Masuk Kerja (Keperluan Pribadi / Keluarga / Dinas)</option>
+                        <option value="sick">🟡 Sakit (Kondisi Kurang Fit / Surat Dokter)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="leave-notes" style="font-weight: 600;">✍️ Alasan / Keterangan Lengkap</label>
+                    <textarea id="leave-notes" class="form-control" rows="3" required
+                        placeholder="Contoh: Mengurus keperluan keluarga mendesak di luar kota / Kondisi kesehatan menurun flu dan demam..."
+                        style="width: 100%; resize: vertical;"></textarea>
+                    <small style="color: #64748b; font-size: 11px;">*Keterangan ini akan langsung diverifikasi dan
+                        ditinjau oleh Administrator CBS.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="leave-attachment" style="font-weight: 600;">📎 Lampiran Bukti / Surat Keterangan
+                        (Opsional)</label>
+                    <input type="file" id="leave-attachment" class="form-control"
+                        accept=".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx,image/jpeg,image/png,image/webp,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        style="width: 100%; padding: 8px;" onchange="handleLeaveFileSelect(event)">
+                    <small style="color: #64748b; font-size: 11px;">Mendukung format: JPG, PNG, WEBP, PDF, dan DOCX
+                        (Maksimal 5 MB). Sangat dianjurkan untuk surat dokter atau bukti resmi.</small>
+
+                    <!-- PREVIEW BERKAS YANG DIPILIH -->
+                    <div id="leave-attachment-preview-container" class="attachment-preview-container">
+                        <div class="attachment-preview-card">
+                            <div class="attachment-left-meta">
+                                <img id="leave-attachment-thumb" class="attachment-thumb-img" src="" alt="Pratinjau"
+                                    style="display: none;">
+                                <div id="leave-attachment-icon" class="attachment-doc-icon">📄</div>
+                                <div class="attachment-text-meta">
+                                    <div id="leave-attachment-name" class="attachment-filename">-</div>
+                                    <div class="attachment-filesize">
+                                        <span id="leave-attachment-type-badge"
+                                            class="attachment-badge-type badge-type-pdf">PDF</span>
+                                        <span id="leave-attachment-size">0 KB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="attachment-btn-cancel"
+                                onclick="clearLeaveAttachmentSelection()" title="Hapus Berkas Pilihan">
+                                ✕ Batalkan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="closeLeaveModal()"
+                        style="width: auto; padding: 8px 16px;">
+                        Batal
+                    </button>
+                    <button type="submit" id="btn-submit-leave" class="btn btn-primary btn-sm"
+                        style="width: auto; padding: 8px 18px; font-weight: 600;">
+                        🚀 Kirim Pengajuan Izin
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT PROFIL & UPLOAD FOTO -->
+    <div id="profile-modal" class="modal-overlay" onclick="handleProfileModalBackdrop(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <h3 style="margin: 0; font-size: 17px; color: #0f172a;">👤 Kelola Profil & Foto Karyawan</h3>
+                    <small style="color: #64748b;">Perbarui foto profil dan data informasi kontak Anda</small>
+                </div>
+                <button type="button" class="modal-close" onclick="closeProfileModal()" title="Tutup">&times;</button>
+            </div>
+
+            <!-- ALERT ERROR / SUKSES MODAL -->
+            <div id="profile-modal-alert"
+                style="display: none; padding: 10px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 14px;">
+            </div>
+
+            <form id="profile-form" onsubmit="handleProfileSubmit(event)">
+                <!-- BAGIAN UPLOAD FOTO PROFIL -->
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 20px; padding: 14px; background: #f8fafc; border-radius: 10px; border: 1px dashed #cbd5e1;">
+                    <div style="position: relative; width: 90px; height: 90px;">
+                        <img id="modal-avatar-preview" src="" alt="Pratinjau Foto"
+                            style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #3b82f6; display: none;">
+                        <div id="modal-avatar-placeholder"
+                            style="width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; font-size: 32px; font-weight: bold; display: flex; align-items: center; justify-content: center; border: 3px solid #bfdbfe;">
+                            👤
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <label for="input-profile-photo" class="btn btn-outline btn-sm"
+                            style="cursor: pointer; display: inline-flex; width: auto; padding: 6px 14px; font-size: 12px; border-color: #3b82f6; color: #1d4ed8; background: #fff;">
+                            📷 Pilih / Ambil Foto Baru
+                        </label>
+                        <input type="file" id="input-profile-photo" accept="image/*" style="display: none;"
+                            onchange="handlePhotoSelect(event)">
+                        <div id="selected-photo-name" style="font-size: 11px; color: #64748b; margin-top: 5px;">
+                            Format: JPG, PNG, WEBP (Maksimal 3 MB).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORM FIELD -->
+                <div class="form-group">
+                    <label for="edit-profile-name" style="font-weight: 600;">Nama Lengkap Karyawan</label>
+                    <input type="text" id="edit-profile-name" required placeholder="Nama lengkap Anda">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-profile-phone" style="font-weight: 600;">Nomor Telepon / WhatsApp</label>
+                    <input type="text" id="edit-profile-phone" placeholder="Contoh: 081234567890">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="form-group">
+                        <label style="font-weight: 600; color: #64748b;">NIP / ID Karyawan</label>
+                        <input type="text" id="edit-profile-nip" disabled
+                            style="background: #f1f5f9; color: #475569; cursor: not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-weight: 600; color: #64748b;">Status</label>
+                        <input type="text" id="edit-profile-status" disabled
+                            style="background: #f1f5f9; color: #475569; cursor: not-allowed;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="font-weight: 600; color: #64748b;">Email (Login User)</label>
+                    <input type="text" id="edit-profile-email" disabled
+                        style="background: #f1f5f9; color: #475569; cursor: not-allowed;">
+                    <small style="color: #64748b; font-size: 11px;">*Email dan NIP dikelola oleh Administrator.</small>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="form-group">
+                        <label style="font-weight: 600; color: #64748b;">Jabatan</label>
+                        <input type="text" id="edit-profile-position" disabled
+                            style="background: #f1f5f9; color: #475569; cursor: not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-weight: 600; color: #64748b;">Divisi</label>
+                        <input type="text" id="edit-profile-department" disabled
+                            style="background: #f1f5f9; color: #475569; cursor: not-allowed;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="closeProfileModal()"
+                        style="width: auto; padding: 8px 16px;">
+                        Batal
+                    </button>
+                    <button type="submit" id="btn-save-profile" class="btn btn-primary btn-sm"
+                        style="width: auto; padding: 8px 18px; font-weight: 600;">
+                        💾 Simpan Perubahan Profil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL PENAMPIL LAMPIRAN DOKUMEN / FOTO -->
+    <div id="attachment-viewer-modal" class="modal-overlay attachment-viewer-backdrop"
+        onclick="closeAttachmentViewerModal()">
+        <div class="modal-content attachment-viewer-content" onclick="event.stopPropagation()">
+            <div class="modal-header attachment-viewer-header">
+                <div style="min-width: 0; flex: 1 1 auto; overflow: hidden;">
+                    <h3 id="viewer-modal-title"
+                        style="margin: 0; font-size: 15px; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        📎 Berkas Lampiran Bukti</h3>
+                    <small id="viewer-modal-subtitle"
+                        style="color: #64748b; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Dokumen
+                        pendukung pengajuan izin/sakit</small>
+                </div>
+                <button type="button" class="modal-close" onclick="closeAttachmentViewerModal()" title="Tutup"
+                    style="flex-shrink: 0; margin-left: 8px;">&times;</button>
+            </div>
+            <div id="viewer-modal-body" class="attachment-viewer-body">
+                <!-- Diisi secara dinamis: Gambar, Iframe PDF, atau Kartu Unduh DOCX -->
+            </div>
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-top: 1px solid var(--gray-200); background: #ffffff; flex-shrink: 0; flex-wrap: wrap; gap: 8px; width: 100%; box-sizing: border-box;">
+                <span id="viewer-file-info-text"
+                    style="font-size: 12px; color: #64748b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px;">-</span>
+                <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                    <a id="viewer-download-btn" href="#" target="_blank" download class="btn btn-outline btn-sm"
+                        style="width: auto; padding: 6px 12px; font-size: 12px;">
+                        📥 Unduh Berkas
+                    </a>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="closeAttachmentViewerModal()"
+                        style="width: auto; padding: 6px 14px; font-size: 12px;">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        // =========================
+        // CEK LOGIN
+        // =========================
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = localStorage.getItem('api_token');
+
+        if (!token || !user) {
+            window.location.href = 'login.html';
+        }
+
+        if (user.role === 'admin') {
+            window.location.href = 'admin/dashboard.html';
+        }
+
+        // =========================
+        // PROFIL KARYAWAN DOM & STATE
+        // =========================
+        const profileAvatarImg = document.getElementById('profile-avatar-img');
+        const profileAvatarPlaceholder = document.getElementById('profile-avatar-placeholder');
+        const userNameElem = document.getElementById('user-name');
+        const roleBadgeElem = document.getElementById('role-badge');
+        const profileStatusBadge = document.getElementById('profile-status-badge');
+        const profileHeaderPosition = document.getElementById('profile-header-position');
+        const profileHeaderDept = document.getElementById('profile-header-dept');
+        const profileEmpNumber = document.getElementById('profile-emp-number');
+        const profileEmail = document.getElementById('profile-email');
+        const profilePosition = document.getElementById('profile-position');
+        const profileDepartment = document.getElementById('profile-department');
+        const profilePhone = document.getElementById('profile-phone');
+        const profileStatusText = document.getElementById('profile-status-text');
+
+        // Modal Profil DOM
+        const profileModal = document.getElementById('profile-modal');
+        const profileModalAlert = document.getElementById('profile-modal-alert');
+        const modalAvatarPreview = document.getElementById('modal-avatar-preview');
+        const modalAvatarPlaceholder = document.getElementById('modal-avatar-placeholder');
+        const inputProfilePhoto = document.getElementById('input-profile-photo');
+        const selectedPhotoName = document.getElementById('selected-photo-name');
+        const editProfileName = document.getElementById('edit-profile-name');
+        const editProfilePhone = document.getElementById('edit-profile-phone');
+        const editProfileNip = document.getElementById('edit-profile-nip');
+        const editProfileStatus = document.getElementById('edit-profile-status');
+        const editProfileEmail = document.getElementById('edit-profile-email');
+        const editProfilePosition = document.getElementById('edit-profile-position');
+        const editProfileDepartment = document.getElementById('edit-profile-department');
+        const btnSaveProfile = document.getElementById('btn-save-profile');
+
+        let currentEmployeeData = null;
+        let selectedPhotoFile = null;
+
+        function resolvePhotoUrl(url) {
+            if (!url) return null;
+            if (url.startsWith('http://') || url.startsWith('https://')) return url;
+            if (url.startsWith('/') && window.location.protocol === 'file:') {
+                return 'http://127.0.0.1:8000' + url;
+            }
+            return url;
+        }
+
+        function getInitials(name) {
+            if (!name) return '👤';
+            const parts = name.trim().split(/\s+/);
+            if (parts.length >= 2) {
+                return (parts[0][0] + parts[1][0]).toUpperCase();
+            }
+            return (parts[0][0] || '👤').toUpperCase();
+        }
+
+        function renderProfileUI(emp, usr) {
+            const currentU = usr || JSON.parse(localStorage.getItem('user')) || {};
+            const empName = emp?.name || currentU.name || '-';
+            const empEmail = emp?.email || currentU.email || '-';
+            const empRole = currentU.role === 'admin' ? 'Administrator' : 'Karyawan';
+            const empNip = emp?.employee_number || '-';
+            const empPos = emp?.position || '-';
+            const empDept = emp?.department || '-';
+            const empPhone = emp?.phone || '-';
+            const isInactive = emp?.status === 'inactive';
+            const empStatusLabel = isInactive ? 'Non-aktif' : 'Aktif';
+
+            // Nama & Badges
+            userNameElem.textContent = empName;
+            roleBadgeElem.textContent = empRole;
+            profileStatusBadge.textContent = empStatusLabel;
+            profileStatusBadge.className = isInactive ? 'badge badge-danger' : 'badge badge-success';
+
+            // Header subinfo
+            profileHeaderPosition.textContent = empPos;
+            profileHeaderDept.textContent = empDept;
+
+            // Detail Grid
+            profileEmpNumber.textContent = empNip;
+            profileEmail.textContent = empEmail;
+            profilePosition.textContent = empPos;
+            profileDepartment.textContent = empDept;
+            profilePhone.textContent = empPhone;
+            profileStatusText.textContent = empStatusLabel;
+            profileStatusText.style.color = isInactive ? '#dc2626' : '#16a34a';
+
+            // Foto Profil
+            const photoUrl = resolvePhotoUrl(emp?.photo_url);
+            if (photoUrl) {
+                profileAvatarImg.src = photoUrl;
+                profileAvatarImg.style.display = 'block';
+                profileAvatarPlaceholder.style.display = 'none';
+            } else {
+                profileAvatarImg.style.display = 'none';
+                profileAvatarPlaceholder.style.display = 'flex';
+                profileAvatarPlaceholder.textContent = getInitials(empName);
+            }
+
+            // Update Top App Bar Avatar & Nama
+            const topBarName = document.getElementById('top-bar-user-name');
+            const topBarImg = document.getElementById('top-bar-avatar-img');
+            const topBarPh = document.getElementById('top-bar-avatar-placeholder');
+            if (topBarName) topBarName.textContent = empName.split(' ')[0] || 'Karyawan';
+            if (photoUrl && topBarImg) {
+                topBarImg.src = photoUrl;
+                topBarImg.style.display = 'block';
+                if (topBarPh) topBarPh.style.display = 'none';
+            } else if (topBarPh) {
+                if (topBarImg) topBarImg.style.display = 'none';
+                topBarPh.style.display = 'flex';
+                topBarPh.textContent = getInitials(empName);
+            }
+
+            // Update Drawer User Info (Sidebar)
+            const drawerName = document.getElementById('drawer-user-name');
+            const drawerEmail = document.getElementById('drawer-user-email');
+            const drawerRole = document.getElementById('drawer-role-badge');
+            const drawerStatus = document.getElementById('drawer-status-badge');
+            const drawerImg = document.getElementById('drawer-avatar-img');
+            const drawerPh = document.getElementById('drawer-avatar-placeholder');
+            if (drawerName) drawerName.textContent = empName;
+            if (drawerEmail) drawerEmail.textContent = empEmail;
+            if (drawerRole) drawerRole.textContent = empRole;
+            if (drawerStatus) {
+                drawerStatus.textContent = empStatusLabel;
+                drawerStatus.className = isInactive ? 'badge badge-danger' : 'badge badge-success';
+            }
+            if (photoUrl && drawerImg) {
+                drawerImg.src = photoUrl;
+                drawerImg.style.display = 'block';
+                if (drawerPh) drawerPh.style.display = 'none';
+            } else if (drawerPh) {
+                if (drawerImg) drawerImg.style.display = 'none';
+                drawerPh.style.display = 'flex';
+                drawerPh.textContent = getInitials(empName);
+            }
+
+            // Update Greeting Card
+            const greetingName = document.getElementById('greeting-user-name');
+            const greetingSub = document.getElementById('greeting-subinfo');
+            const greetingThumb = document.getElementById('greeting-avatar-thumb');
+            if (greetingName) greetingName.textContent = empName.split(' ')[0] || 'Karyawan';
+            if (greetingSub) greetingSub.textContent = `${empPos} • ${empDept}`;
+            if (greetingThumb) {
+                if (photoUrl) {
+                    greetingThumb.innerHTML = `<img src="${photoUrl}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+                } else {
+                    greetingThumb.textContent = getInitials(empName);
+                }
+            }
+        }
+
+        // =========================
+        // LOAD PROFILE LENGKAP KARYAWAN
+        // =========================
+        async function loadProfile() {
+            try {
+                const res = await apiRequest('/profile');
+                if (res && res.user) {
+                    localStorage.setItem('user', JSON.stringify(res.user));
+                    if (res.employee) {
+                        currentEmployeeData = {
+                            ...res.employee,
+                            name: res.user.name,
+                            email: res.user.email
+                        };
+                    }
+                    renderProfileUI(res.employee, res.user);
+                }
+            } catch (err) {
+                console.error('Gagal mengambil profil karyawan:', err);
+            }
+        }
+
+        // =========================
+        // VIEW SWITCHER & SIDEBAR DRAWER
+        // =========================
+        let currentActiveView = 'presensi';
+
+        function switchView(viewName) {
+            currentActiveView = viewName;
+
+            // Sembunyikan semua pane, tampilkan target pane
+            document.querySelectorAll('.view-pane').forEach(el => el.classList.remove('active'));
+            const targetPane = document.getElementById(`view-${viewName}`);
+            if (targetPane) targetPane.classList.add('active');
+
+            // Update item navigasi sidebar
+            document.querySelectorAll('.sidebar-menu-item').forEach(el => el.classList.remove('active'));
+            const sideItem = document.getElementById(`sidebar-item-${viewName}`);
+            if (sideItem) sideItem.classList.add('active');
+
+            // Update item navigasi desktop bar
+            document.querySelectorAll('.desktop-nav-tab').forEach(el => el.classList.remove('active'));
+            const deskItem = document.getElementById(`desk-nav-${viewName}`);
+            if (deskItem) deskItem.classList.add('active');
+
+            // Sinkronisasi data saat berpindah tab
+            if (viewName === 'profile') {
+                loadProfile();
+            } else if (viewName === 'history') {
+                loadHistory();
+            } else if (viewName === 'presensi') {
+                loadDashboard();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleSidebar() {
+            const drawer = document.getElementById('sidebar-drawer');
+            if (drawer.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+
+        function openSidebar() {
+            document.getElementById('sidebar-drawer').classList.add('open');
+            document.getElementById('sidebar-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('sidebar-open');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar-drawer').classList.remove('open');
+            document.getElementById('sidebar-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+            document.body.classList.remove('sidebar-open');
+        }
+
+        function openProfileModal() {
+            const currentU = JSON.parse(localStorage.getItem('user')) || {};
+            const emp = currentEmployeeData || {};
+
+            editProfileName.value = currentU.name || emp.name || '';
+            editProfilePhone.value = emp.phone || '';
+            editProfileNip.value = emp.employee_number || '-';
+            editProfileStatus.value = emp.status === 'inactive' ? 'Non-aktif' : 'Aktif';
+            editProfileEmail.value = currentU.email || emp.email || '-';
+            editProfilePosition.value = emp.position || '-';
+            editProfileDepartment.value = emp.department || '-';
+
+            // Reset file input & preview
+            selectedPhotoFile = null;
+            inputProfilePhoto.value = '';
+            selectedPhotoName.textContent = 'Format: JPG, PNG, WEBP (Maksimal 3 MB).';
+
+            const photoUrl = resolvePhotoUrl(emp.photo_url);
+            if (photoUrl) {
+                modalAvatarPreview.src = photoUrl;
+                modalAvatarPreview.style.display = 'block';
+                modalAvatarPlaceholder.style.display = 'none';
+            } else {
+                modalAvatarPreview.style.display = 'none';
+                modalAvatarPlaceholder.style.display = 'flex';
+                modalAvatarPlaceholder.textContent = getInitials(currentU.name || emp.name);
+            }
+
+            profileModalAlert.style.display = 'none';
+            profileModal.style.display = 'flex';
+        }
+
+        function closeProfileModal() {
+            profileModal.style.display = 'none';
+            selectedPhotoFile = null;
+        }
+
+        function handleProfileModalBackdrop(e) {
+            if (e.target.id === 'profile-modal') {
+                closeProfileModal();
+            }
+        }
+
+        function handlePhotoSelect(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            // Validasi ukuran (max 3 MB)
+            if (file.size > 3 * 1024 * 1024) {
+                profileModalAlert.className = 'alert alert-danger';
+                profileModalAlert.style.display = 'block';
+                profileModalAlert.textContent = '⚠️ Ukuran foto melebihi 3 MB. Pilih file yang lebih kecil.';
+                inputProfilePhoto.value = '';
+                return;
+            }
+
+            // Validasi tipe
+            if (!file.type.startsWith('image/')) {
+                profileModalAlert.className = 'alert alert-danger';
+                profileModalAlert.style.display = 'block';
+                profileModalAlert.textContent = '⚠️ File yang dipilih harus berupa gambar (JPG, PNG, WEBP).';
+                inputProfilePhoto.value = '';
+                return;
+            }
+
+            selectedPhotoFile = file;
+            selectedPhotoName.textContent = `File terpilih: ${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
+            profileModalAlert.style.display = 'none';
+
+            // Preview langsung
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                modalAvatarPreview.src = evt.target.result;
+                modalAvatarPreview.style.display = 'block';
+                modalAvatarPlaceholder.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function handleProfileSubmit(e) {
+            e.preventDefault();
+            const newName = editProfileName.value.trim();
+            const newPhone = editProfilePhone.value.trim();
+
+            if (!newName) {
+                profileModalAlert.className = 'alert alert-danger';
+                profileModalAlert.style.display = 'block';
+                profileModalAlert.textContent = '⚠️ Nama lengkap tidak boleh kosong.';
+                return;
+            }
+
+            btnSaveProfile.disabled = true;
+            btnSaveProfile.textContent = '⏳ Menyimpan...';
+            profileModalAlert.style.display = 'none';
+
+            try {
+                const formData = new FormData();
+                formData.append('name', newName);
+                formData.append('phone', newPhone);
+                if (selectedPhotoFile) {
+                    formData.append('photo', selectedPhotoFile);
+                }
+
+                const res = await apiRequest('/profile', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // Update local storage user
+                const storedUser = JSON.parse(localStorage.getItem('user')) || {};
+                if (res.user) {
+                    storedUser.name = res.user.name;
+                    localStorage.setItem('user', JSON.stringify(storedUser));
+                }
+
+                // Update state & UI
+                if (res.employee) {
+                    currentEmployeeData = res.employee;
+                }
+                renderProfileUI(res.employee, res.user);
+
+                closeProfileModal();
+                showBanner('success', '✅ Profil Berhasil Diperbarui', res.message || 'Data profil dan foto berhasil diperbarui.');
+
+            } catch (err) {
+                console.error('Gagal memperbarui profil:', err);
+                profileModalAlert.className = 'alert alert-danger';
+                profileModalAlert.style.display = 'block';
+                profileModalAlert.textContent = '❌ Gagal menyimpan profil: ' + err.message;
+            } finally {
+                btnSaveProfile.disabled = false;
+                btnSaveProfile.textContent = '💾 Simpan Perubahan Profil';
+            }
+        }
+
+        // Render awal profil
+        renderProfileUI(null, user);
+
+        const attendanceButton = document.getElementById('attendance-button');
+        const btnRequestLeave = document.getElementById('btn-request-leave');
+        const attendanceSummary = document.getElementById('attendance-summary');
+        const statusBanner = document.getElementById('status-banner');
+        const historyTableBody = document.getElementById('history-table-body');
+        const branchContainer = document.getElementById('branch-selection-container');
+        const officeNameDisplay = document.getElementById('office-name-display');
+        const officeInfoDetail = document.getElementById('office-info-detail');
+        const gpsDistanceResult = document.getElementById('gps-distance-result');
+        const gpsCheckStatus = document.getElementById('gps-check-status');
+
+        let currentAttendanceState = 'not_working'; // 'not_working', 'working', 'completed', 'leave', 'sick'
+        let currentTodayData = null;
+        let currentTargetOffice = null;
+        let availableOffices = [];
+
+        // =========================
+        // BANNER HELPER
+        // =========================
+        function showBanner(type, title, message) {
+            statusBanner.className = `alert alert-${type}`;
+            statusBanner.style.display = 'block';
+            statusBanner.innerHTML = `<strong>${title}</strong><div style="margin-top: 4px;">${message}</div>`;
+        }
+
+        function hideBanner() {
+            statusBanner.style.display = 'none';
+        }
+
+        // =========================
+        // MODAL IZIN TIDAK MASUK KERJA (LEAVE / SAKIT)
+        // =========================
+        function openLeaveModal(isEdit = false) {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('leave-date');
+            const typeInput = document.getElementById('leave-type');
+            const notesInput = document.getElementById('leave-notes');
+            const modalAlert = document.getElementById('leave-modal-alert');
+            modalAlert.style.display = 'none';
+
+            dateInput.value = todayStr;
+            clearLeaveAttachmentSelection();
+
+            if (isEdit && currentTodayData) {
+                typeInput.value = currentTodayData.status === 'sick' ? 'sick' : 'leave';
+                notesInput.value = currentTodayData.notes || '';
+            } else {
+                typeInput.value = 'leave';
+                notesInput.value = '';
+            }
+
+            document.getElementById('leave-modal').style.display = 'flex';
+        }
+
+        function closeLeaveModal() {
+            document.getElementById('leave-modal').style.display = 'none';
+            clearLeaveAttachmentSelection();
+        }
+
+        function handleModalBackdropClick(e) {
+            if (e.target.id === 'leave-modal') {
+                closeLeaveModal();
+            }
+        }
+
+        function handleLeaveFileSelect(e) {
+            const file = e.target.files && e.target.files[0];
+            const previewContainer = document.getElementById('leave-attachment-preview-container');
+            const thumbImg = document.getElementById('leave-attachment-thumb');
+            const iconBox = document.getElementById('leave-attachment-icon');
+            const nameEl = document.getElementById('leave-attachment-name');
+            const sizeEl = document.getElementById('leave-attachment-size');
+            const badgeEl = document.getElementById('leave-attachment-type-badge');
+            const modalAlert = document.getElementById('leave-modal-alert');
+
+            if (!file) {
+                clearLeaveAttachmentSelection();
+                return;
+            }
+
+            modalAlert.style.display = 'none';
+
+            // Validasi ukuran maksimal 5 MB
+            const maxBytes = 5 * 1024 * 1024;
+            if (file.size > maxBytes) {
+                modalAlert.className = 'alert alert-danger';
+                modalAlert.style.display = 'block';
+                modalAlert.textContent = '⚠️ Ukuran berkas terlalu besar (' + formatFileSize(file.size) + '). Batas maksimal adalah 5 MB.';
+                clearLeaveAttachmentSelection();
+                return;
+            }
+
+            // Validasi ekstensi
+            const ext = file.name.split('.').pop().toLowerCase();
+            const allowedExts = ['jpg', 'jpeg', 'png', 'webp', 'pdf', 'doc', 'docx'];
+            if (!allowedExts.includes(ext)) {
+                modalAlert.className = 'alert alert-danger';
+                modalAlert.style.display = 'block';
+                modalAlert.textContent = '⚠️ Format berkas .' + ext + ' tidak didukung. Harap pilih file JPG, PNG, WEBP, PDF, atau DOCX.';
+                clearLeaveAttachmentSelection();
+                return;
+            }
+
+            // Tampilkan metadata
+            nameEl.textContent = file.name;
+            sizeEl.textContent = formatFileSize(file.size);
+
+            if (['jpg', 'jpeg', 'png', 'webp'].includes(ext)) {
+                badgeEl.className = 'attachment-badge-type badge-type-img';
+                badgeEl.textContent = ext.toUpperCase();
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    thumbImg.src = evt.target.result;
+                    thumbImg.style.display = 'block';
+                    iconBox.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else if (ext === 'pdf') {
+                badgeEl.className = 'attachment-badge-type badge-type-pdf';
+                badgeEl.textContent = 'PDF';
+                thumbImg.style.display = 'none';
+                iconBox.style.display = 'flex';
+                iconBox.textContent = '📄';
+            } else {
+                badgeEl.className = 'attachment-badge-type badge-type-doc';
+                badgeEl.textContent = ext.toUpperCase();
+                thumbImg.style.display = 'none';
+                iconBox.style.display = 'flex';
+                iconBox.textContent = '📝';
+            }
+
+            previewContainer.style.display = 'block';
+        }
+
+        function clearLeaveAttachmentSelection() {
+            const fileInput = document.getElementById('leave-attachment');
+            const previewContainer = document.getElementById('leave-attachment-preview-container');
+            const thumbImg = document.getElementById('leave-attachment-thumb');
+            if (fileInput) fileInput.value = '';
+            if (thumbImg) thumbImg.src = '';
+            if (previewContainer) previewContainer.style.display = 'none';
+        }
+
+        function formatFileSize(bytes) {
+            if (!bytes || bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function openAttachmentViewerModal(url, type, name) {
+            const modal = document.getElementById('attachment-viewer-modal');
+            const body = document.getElementById('viewer-modal-body');
+            const title = document.getElementById('viewer-modal-title');
+            const subtitle = document.getElementById('viewer-modal-subtitle');
+            const dlBtn = document.getElementById('viewer-download-btn');
+            const infoText = document.getElementById('viewer-file-info-text');
+
+            if (!modal || !body) return;
+
+            title.textContent = '📎 Lampiran: ' + (name || 'Berkas Bukti');
+            subtitle.textContent = 'Format: ' + (type ? type.toUpperCase() : 'Dokumen');
+            infoText.textContent = name || 'Berkas Lampiran Resmi';
+            dlBtn.href = url + '?download=1';
+            dlBtn.download = name || 'lampiran';
+
+            body.innerHTML = '<div style="padding: 20px; color: #64748b;">⏳ Memuat pratinjau...</div>';
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            if (type === 'image' || (!type && /\.(jpg|jpeg|png|webp)$/i.test(url))) {
+                body.innerHTML = `
+                    <img src="${url}" class="attachment-viewer-img" alt="Lampiran" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=\\'color:#dc2626; padding:20px;\\'>❌ Gagal memuat gambar. Berkas mungkin sudah dihapus atau tidak dapat diakses.</div>';">
+                `;
+            } else if (type === 'pdf' || (!type && /\.pdf$/i.test(url))) {
+                body.innerHTML = `
+                    <iframe src="${url}" style="width: 100%; height: 65vh; border: none; border-radius: 6px; display: block;"></iframe>
+                `;
+            } else {
+                body.innerHTML = `
+                    <div class="attachment-viewer-doc">
+                        <div class="attachment-viewer-doc-icon">📝</div>
+                        <h4 style="margin: 0 0 6px 0; color: #0f172a;">${name || 'Dokumen Word (DOCX/DOC)'}</h4>
+                        <p style="color: #64748b; font-size: 13px; margin: 0 0 16px 0;">Dokumen ini dapat dibuka langsung di aplikasi Microsoft Word atau diunduh ke perangkat Anda.</p>
+                        <a href="${url}?download=1" download class="btn btn-primary btn-sm" style="width: auto; padding: 8px 18px; display: inline-flex;">
+                            📥 Unduh Dokumen Sekarang
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        function closeAttachmentViewerModal() {
+            const modal = document.getElementById('attachment-viewer-modal');
+            if (modal) modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        async function handleLeaveSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-leave');
+            const modalAlert = document.getElementById('leave-modal-alert');
+            const date = document.getElementById('leave-date').value;
+            const status = document.getElementById('leave-type').value;
+            const notes = document.getElementById('leave-notes').value.trim();
+            const fileInput = document.getElementById('leave-attachment');
+
+            if (!date || !notes) {
+                modalAlert.className = 'alert alert-danger';
+                modalAlert.style.display = 'block';
+                modalAlert.textContent = 'Harap isi tanggal dan alasan izin secara lengkap.';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Mengirim pengajuan...';
+
+            try {
+                const formData = new FormData();
+                formData.append('attendance_date', date);
+                formData.append('status', status);
+                formData.append('notes', notes);
+                if (fileInput && fileInput.files && fileInput.files[0]) {
+                    formData.append('attachment', fileInput.files[0]);
+                }
+
+                const res = await apiRequest('/attendance/leave', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                closeLeaveModal();
+                showBanner('success', '✅ Pengajuan Berhasil', res.message || 'Pengajuan izin tidak masuk kerja berhasil dikirim dan menunggu persetujuan manajemen.');
+                await loadDashboard();
+                await loadHistory();
+
+            } catch (err) {
+                console.error('Pengajuan izin gagal:', err);
+                modalAlert.className = 'alert alert-danger';
+                modalAlert.style.display = 'block';
+                modalAlert.textContent = '❌ Gagal: ' + err.message;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🚀 Kirim Pengajuan Izin';
+            }
+        }
+
+        // =========================
+        // FORMAT DATE & TIME
+        // =========================
+        function formatTime(dateString) {
+            if (!dateString) return '-';
+            const d = new Date(dateString);
+            return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB';
+        }
+
+        function formatDateOnly(dateString) {
+            if (!dateString) return '-';
+            const d = new Date(dateString);
+            return d.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        // =========================
+        // HAVERSINE DISTANCE HELPER (METER)
+        // =========================
+        function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371000; // Radius bumi dalam meter
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function formatDistanceText(meters) {
+            if (meters >= 1000) {
+                return (meters / 1000).toFixed(2) + ' km';
+            }
+            return Math.round(meters) + ' meter';
+        }
+
+        // =========================
+        // LOAD DATA KANTOR TUNGGAL CV BERKAT SENTOSA
+        // =========================
+        async function loadOffices() {
+            try {
+                const data = await apiRequest('/offices');
+                const off = data.office || (data.offices && data.offices.find(o => o.status === 'active')) || (data.offices && data.offices[0]);
+                if (off) {
+                    currentTargetOffice = off;
+                } else {
+                    currentTargetOffice = {
+                        id: 1,
+                        name: 'Kantor CV Berkat Sentosa (Pusat)',
+                        latitude: -7.257500,
+                        longitude: 112.752100,
+                        radius: 100
+                    };
+                }
+
+                if (officeNameDisplay) {
+                    officeNameDisplay.textContent = currentTargetOffice.name;
+                }
+                if (officeInfoDetail) {
+                    const latNum = parseFloat(currentTargetOffice.latitude);
+                    const lngNum = parseFloat(currentTargetOffice.longitude);
+                    officeInfoDetail.innerHTML = `Lokasi Kantor Pusat • Batas Radius Presensi: <strong>${formatDistanceText(currentTargetOffice.radius)}</strong> • Titik: (${latNum.toFixed(5)}, ${lngNum.toFixed(5)})`;
+                }
+
+                const mapBtn = document.getElementById('link-employee-office-map');
+                if (mapBtn) {
+                    mapBtn.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(currentTargetOffice.latitude + ',' + currentTargetOffice.longitude)}`;
+                    mapBtn.style.display = 'inline-flex';
+                }
+
+            } catch (err) {
+                console.error('Gagal mengambil data kantor:', err);
+            }
+        }
+
+        // =========================
+        // CEK JARAK GPS REAL-TIME KE CV BERKAT SENTOSA
+        // =========================
+        function checkCurrentGpsDistance() {
+            if (!navigator.geolocation) {
+                alert('Browser Anda tidak mendukung fitur Geolocation.');
+                return;
+            }
+
+            gpsCheckStatus.textContent = '📡 Mengambil titik koordinat GPS...';
+            const btn = document.getElementById('btn-check-distance');
+            btn.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    btn.disabled = false;
+                    gpsCheckStatus.textContent = '✅ Titik lokasi GPS berhasil dibaca';
+                    const lat = pos.coords.latitude;
+                    const lng = pos.coords.longitude;
+                    const acc = pos.coords.accuracy;
+                    window.lastGpsCoords = { lat, lng, acc };
+
+                    renderGpsDistances(lat, lng, acc);
+                },
+                (err) => {
+                    btn.disabled = false;
+                    gpsCheckStatus.textContent = '❌ Gagal: ' + err.message;
+                    alert('Gagal mendeteksi lokasi GPS HP: ' + err.message);
+                },
+                { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
+            );
+        }
+
+        function renderGpsDistances(lat, lng, acc) {
+            gpsDistanceResult.style.display = 'block';
+
+            const off = currentTargetOffice || {
+                name: 'Kantor CV Berkat Sentosa (Pusat)',
+                latitude: -7.257500,
+                longitude: 112.752100,
+                radius: 100
+            };
+
+            const dist = calculateHaversineDistance(lat, lng, parseFloat(off.latitude), parseFloat(off.longitude));
+            const distText = formatDistanceText(dist);
+            const radText = formatDistanceText(off.radius);
+            const isWithin = dist <= off.radius;
+
+            const borderCol = isWithin ? '#86efac' : '#fca5a5';
+            const bgCol = isWithin ? '#f0fdf4' : '#fef2f2';
+
+            let html = `
+                <div style="margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <div><strong>📍 Posisi GPS Anda:</strong> ${lat.toFixed(5)}, ${lng.toFixed(5)}</div>
+                    <small style="color: #64748b;">Akurasi HP: ±${Math.round(acc)} meter</small>
+                </div>
+                <div style="padding: 10px; border-radius: 6px; border: 1.5px solid ${borderCol}; background: ${bgCol}; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <div style="font-weight: 700; color: #1e293b; font-size: 13px;">
+                            🏢 ${off.name}
+                        </div>
+                        <div style="color: #475569; font-size: 12px; margin-top: 3px;">
+                            Jarak Anda ke Titik Kantor: <strong>${distText}</strong> | Batas Radius Maksimal: <strong>${radText}</strong>
+                        </div>
+                    </div>
+                    <div>
+                        ${isWithin
+                    ? '<span class="badge badge-success" style="font-size: 11px; padding: 4px 8px;">✅ Dalam Radius Presensi</span>'
+                    : '<span class="badge badge-danger" style="font-size: 11px; padding: 4px 8px;">❌ Di Luar Radius</span>'}
+                    </div>
+                </div>
+            `;
+
+            if (!isWithin) {
+                html += `
+                    <div style="margin-top: 10px; padding: 8px 10px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 6px; color: #92400e; font-size: 11px; line-height: 1.4;">
+                        💡 <strong>Informasi Presensi CV Berkat Sentosa:</strong> Presensi hanya dapat dilakukan ketika Anda berada di dalam radius kantor CV Berkat Sentosa (${radText}). Pastikan Anda berada di area kantor atau hubungi Administrator untuk penyesuaian titik/radius jika diperlukan.
+                    </div>
+                `;
+            }
+
+            gpsDistanceResult.innerHTML = html;
+        }
+
+        // =========================
+        // LOAD DASHBOARD
+        // =========================
+        async function loadDashboard() {
+            try {
+                // Selalu sinkronkan data titik kantor terbaru saat memuat/menyegarkan dashboard
+                await loadOffices();
+
+                const data = await apiRequest('/dashboard');
+
+                if (data.employee) {
+                    currentEmployeeData = data.employee;
+                    renderProfileUI(data.employee, user);
+                }
+
+                const today = data.today;
+                currentTodayData = today;
+
+                if (!today || today.status === 'not_working') {
+                    currentAttendanceState = 'not_working';
+                    branchContainer.style.display = 'block';
+                    attendanceSummary.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge-warning">Belum Presensi</span>
+                            <span style="font-size: 13px; color: #64748b;">Silakan klik Mulai Kerja saat sudah berada di area kantor CV Berkat Sentosa, atau ajukan izin jika berhalangan hadir.</span>
+                        </div>
+                    `;
+                    attendanceButton.style.display = 'block';
+                    attendanceButton.className = 'btn btn-success';
+                    attendanceButton.textContent = '📍 Mulai Kerja (Check-In)';
+                    attendanceButton.disabled = false;
+                    btnRequestLeave.style.display = 'inline-flex';
+                    btnRequestLeave.textContent = '📝 Ajukan Izin / Sakit';
+                } else if (today.status === 'leave' || today.status === 'sick') {
+                    currentAttendanceState = today.status;
+                    branchContainer.style.display = 'none';
+
+                    const isSick = today.status === 'sick';
+                    const statusLabel = isSick ? '🟡 Sakit' : '🔵 Izin Tidak Masuk Kerja';
+                    const badgeClass = isSick ? 'badge-amber' : 'badge-info';
+                    const bgHeader = isSick ? '#fffbeb' : '#eff6ff';
+                    const borderHeader = isSick ? '#fde68a' : '#93c5fd';
+                    const textHeader = isSick ? '#92400e' : '#1e3a8a';
+
+                    let approvalBadge = '<span class="badge badge-pending">⏳ Menunggu Persetujuan</span>';
+                    let approvalNote = 'Pengajuan izin Anda sedang ditinjau oleh pihak manajemen CV Berkat Sentosa.';
+                    if (today.approval_status === 'approved') {
+                        approvalBadge = '<span class="badge badge-approved">✅ Disetujui Admin</span>';
+                        approvalNote = 'Pengajuan izin telah disetujui resmi oleh Administrator.';
+                    } else if (today.approval_status === 'rejected') {
+                        approvalBadge = '<span class="badge badge-rejected">❌ Ditolak Admin</span>';
+                        approvalNote = `Alasan Penolakan: <strong>${today.rejection_reason || 'Tidak memenuhi kriteria'}</strong>`;
+                    }
+
+                    let attachmentHtml = '';
+                    if (today.attachment_url) {
+                        const attType = today.attachment_type || 'file';
+                        const attName = today.attachment_name || 'Lampiran';
+                        const isDoc = attType === 'doc';
+                        const icon = attType === 'image' ? '🖼️' : (isDoc ? '📝' : '📄');
+                        attachmentHtml = `
+                            <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <button type="button" class="attachment-badge-btn" onclick="openAttachmentViewerModal('${today.attachment_url}', '${attType}', '${attName}')">
+                                    ${icon} Lihat Berkas Lampiran (${attName})
+                                </button>
+                                <a href="${today.attachment_url}?download=1" download class="btn btn-outline btn-sm" style="font-size: 11px; padding: 4px 10px;">
+                                    📥 Unduh
+                                </a>
+                            </div>
+                        `;
+                    }
+
+                    attendanceSummary.innerHTML = `
+                        <div style="background: ${bgHeader}; border: 1.5px solid ${borderHeader}; border-radius: 8px; padding: 14px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span class="badge ${badgeClass}" style="font-size: 12px; padding: 4px 10px;">
+                                        ${statusLabel}
+                                    </span>
+                                    ${approvalBadge}
+                                </div>
+                                <button type="button" class="btn btn-outline btn-sm" style="font-size: 11px; padding: 4px 10px; width: auto; background: #fff;" onclick="openLeaveModal(true)">
+                                    ✏️ Ubah Pengajuan
+                                </button>
+                            </div>
+                            <div style="font-size: 13px; color: ${textHeader}; line-height: 1.5;">
+                                <strong>Keterangan / Alasan Lengkap:</strong>
+                                <div class="table-col-notes-box" style="margin-top: 6px; background: #ffffff;">
+                                    ${today.notes || '-'}
+                                </div>
+                            </div>
+                            ${attachmentHtml}
+                            <div style="font-size: 11px; color: #64748b; margin-top: 8px;">
+                                ℹ️ ${approvalNote}
+                            </div>
+                        </div>
+                    `;
+                    attendanceButton.style.display = 'block';
+                    attendanceButton.className = 'btn btn-secondary';
+                    attendanceButton.textContent = `${statusLabel} (Tercatat)`;
+                    attendanceButton.disabled = true;
+                    btnRequestLeave.style.display = 'none';
+                } else if (today.check_in && !today.check_out) {
+                    currentAttendanceState = 'working';
+                    branchContainer.style.display = 'none';
+                    attendanceSummary.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <span class="badge badge-success">Sedang Bekerja</span>
+                            <span style="font-size: 13px; font-weight: 600;">Check-In: ${formatTime(today.check_in)}</span>
+                        </div>
+                        <div style="font-size: 13px; color: #475569;">
+                            🏢 Kantor: <strong>${today.office ? today.office.name : 'Kantor CV Berkat Sentosa (Pusat)'}</strong>
+                        </div>
+                    `;
+                    attendanceButton.style.display = 'block';
+                    attendanceButton.className = 'btn btn-danger';
+                    attendanceButton.textContent = '🏁 Selesai Kerja (Check-Out)';
+                    attendanceButton.disabled = false;
+                    btnRequestLeave.style.display = 'none';
+                } else {
+                    currentAttendanceState = 'completed';
+                    branchContainer.style.display = 'none';
+                    attendanceSummary.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <span class="badge badge-info">Presensi Selesai</span>
+                            <span style="font-size: 13px; color: #64748b;">Anda sudah menyelesaikan presensi kerja hari ini.</span>
+                        </div>
+                        <div style="font-size: 13px; color: #475569; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px;">
+                            <div>Check-In: <strong>${formatTime(today.check_in)}</strong></div>
+                            <div>Check-Out: <strong>${formatTime(today.check_out)}</strong></div>
+                        </div>
+                        <div style="font-size: 13px; color: #64748b;">
+                            🏢 Lokasi: <strong>${today.office ? today.office.name : 'Kantor CV Berkat Sentosa (Pusat)'}</strong>
+                        </div>
+                    `;
+                    attendanceButton.style.display = 'block';
+                    attendanceButton.className = 'btn btn-secondary';
+                    attendanceButton.textContent = '✅ Presensi Hari Ini Lengkap';
+                    attendanceButton.disabled = true;
+                    btnRequestLeave.style.display = 'none';
+                }
+
+            } catch (error) {
+                console.error('Gagal mengambil data dashboard:', error);
+                attendanceSummary.innerHTML = `<span style="color: #dc2626;">Gagal memuat status presensi: ${error.message}</span>`;
+                attendanceButton.textContent = '🔄 Coba Lagi';
+                attendanceButton.disabled = false;
+            }
+        }
+
+        // =========================
+        // LOAD HISTORY DENGAN STATUS PERSETUJUAN & LAMPIRAN
+        // =========================
+        async function loadHistory() {
+            const mobileCardsContainer = document.getElementById('mobile-history-cards');
+            try {
+                historyTableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #64748b;">Memuat data riwayat...</td></tr>`;
+                if (mobileCardsContainer) {
+                    mobileCardsContainer.innerHTML = `<div style="text-align: center; color: #64748b; font-size: 13px; padding: 16px;">Memuat data riwayat...</div>`;
+                }
+
+                const data = await apiRequest('/attendance/history');
+                const list = data.attendance || [];
+
+                if (list.length === 0) {
+                    historyTableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #64748b;">Belum ada riwayat kehadiran.</td></tr>`;
+                    if (mobileCardsContainer) {
+                        mobileCardsContainer.innerHTML = `<div style="text-align: center; color: #64748b; font-size: 13px; padding: 20px; background: #f8fafc; border-radius: 8px;">Belum ada riwayat kehadiran.</div>`;
+                    }
+                    return;
+                }
+
+                let html = '';
+                let mobileHtml = '';
+                list.forEach(att => {
+                    let statusBadge = '<span class="badge badge-success">Hadir</span>';
+                    if (att.status === 'late') {
+                        statusBadge = '<span class="badge badge-warning">Terlambat</span>';
+                    } else if (att.status === 'absent') {
+                        statusBadge = '<span class="badge badge-danger">Alpa</span>';
+                    } else if (att.status === 'leave') {
+                        statusBadge = '<span class="badge badge-info" style="background: #2563eb; color: #fff;">Izin</span>';
+                    } else if (att.status === 'sick') {
+                        statusBadge = '<span class="badge badge-amber" style="background: #d97706; color: #fff;">Sakit</span>';
+                    }
+
+                    const isLeaveOrSick = att.status === 'leave' || att.status === 'sick';
+
+                    let approvalBadge = '<span class="badge badge-approved" style="font-size: 10px;">Valid Otomatis</span>';
+                    if (isLeaveOrSick) {
+                        if (att.approval_status === 'pending') {
+                            approvalBadge = '<span class="badge badge-pending">⏳ Menunggu</span>';
+                        } else if (att.approval_status === 'approved') {
+                            approvalBadge = '<span class="badge badge-approved">✅ Disetujui</span>';
+                        } else if (att.approval_status === 'rejected') {
+                            approvalBadge = `<span class="badge badge-rejected" title="${att.rejection_reason || ''}">❌ Ditolak</span>`;
+                        }
+                    }
+
+                    const checkInText = isLeaveOrSick ? '<span style="color: #94a3b8;">-</span>' : formatTime(att.check_in);
+                    const checkOutText = isLeaveOrSick ? '<span style="color: #94a3b8;">-</span>' : formatTime(att.check_out);
+                    const officeText = isLeaveOrSick
+                        ? '<span style="color: #94a3b8;">-</span>'
+                        : (att.office_location ? att.office_location.name : 'Kantor CV Berkat Sentosa (Pusat)');
+
+                    const distText = isLeaveOrSick
+                        ? '<span style="color: #94a3b8;">-</span>'
+                        : (att.check_in_distance
+                            ? (att.check_in_distance >= 1000 ? (att.check_in_distance / 1000).toFixed(2) + ' km' : Math.round(att.check_in_distance) + ' m')
+                            : '-');
+
+                    let detailsHtml = '';
+                    if (att.notes) {
+                        detailsHtml += `<div class="table-col-notes">${att.notes}</div>`;
+                    }
+                    if (att.attachment_url) {
+                        const attType = att.attachment_type || 'file';
+                        const attName = att.attachment_name || 'Lampiran';
+                        const isDoc = attType === 'doc';
+                        const icon = attType === 'image' ? '🖼️' : (isDoc ? '📝' : '📄');
+                        detailsHtml += `
+                            <div style="margin-top: 6px;">
+                                <button type="button" class="attachment-badge-btn" onclick="openAttachmentViewerModal('${att.attachment_url}', '${attType}', '${attName}')">
+                                    ${icon} ${isDoc ? 'Unduh' : 'Lihat'} Bukti
+                                </button>
+                            </div>
+                        `;
+                    }
+                    if (att.approval_status === 'rejected' && att.rejection_reason) {
+                        detailsHtml += `<div style="font-size: 11.5px; color: #b91c1c; margin-top: 4px; font-weight: 600;">Alasan Penolakan: ${att.rejection_reason}</div>`;
+                    }
+                    if (!detailsHtml) {
+                        detailsHtml = '<span style="color: #94a3b8;">-</span>';
+                    }
+
+                    // HTML untuk Desktop Table
+                    html += `
+                        <tr>
+                            <td><strong>${formatDateOnly(att.attendance_date)}</strong></td>
+                            <td>${statusBadge}</td>
+                            <td>${approvalBadge}</td>
+                            <td>${checkInText}</td>
+                            <td>${checkOutText}</td>
+                            <td>${officeText}</td>
+                            <td><small style="color: #64748b;">${distText}</small></td>
+                            <td class="table-col-notes">${detailsHtml}</td>
+                        </tr>
+                    `;
+
+                    // HTML untuk Mobile Touch Cards
+                    mobileHtml += `
+                        <div class="mobile-history-card">
+                            <div class="mobile-history-card-header">
+                                <span style="font-weight: 700; color: #0f172a; font-size: 13px;">${formatDateOnly(att.attendance_date)}</span>
+                                <div style="display: flex; gap: 4px; align-items: center;">
+                                    ${statusBadge}
+                                    ${approvalBadge}
+                                </div>
+                            </div>
+                            ${!isLeaveOrSick ? `
+                            <div class="mobile-history-times">
+                                <div class="mobile-history-time-box">
+                                    <div style="color: #64748b; font-size: 10px; text-transform: uppercase;">Check-In</div>
+                                    <strong style="color: #16a34a; font-size: 13px;">${checkInText}</strong>
+                                </div>
+                                <div class="mobile-history-time-box">
+                                    <div style="color: #64748b; font-size: 10px; text-transform: uppercase;">Check-Out</div>
+                                    <strong style="color: ${att.check_out ? '#dc2626' : '#94a3b8'}; font-size: 13px;">${checkOutText}</strong>
+                                </div>
+                            </div>
+                            <div class="mobile-history-footer">
+                                <span>🏢 ${officeText}</span>
+                                <span>📍 Jarak: ${distText}</span>
+                            </div>
+                            ` : `
+                            <div style="background: #f8fafc; border-radius: 6px; padding: 8px 10px; font-size: 12px; color: #1e293b; margin-top: 4px;">
+                                ${detailsHtml}
+                            </div>
+                            `}
+                        </div>
+                    `;
+                });
+
+                historyTableBody.innerHTML = html;
+                if (mobileCardsContainer) {
+                    mobileCardsContainer.innerHTML = mobileHtml;
+                }
+
+            } catch (error) {
+                console.error('Gagal memuat riwayat kehadiran:', error);
+                const retryHtml = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: #dc2626; padding: 20px;">
+                            ⚠️ Gagal mengambil riwayat kehadiran: ${error.message}<br>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="loadHistory()" style="margin-top: 8px; width: auto; padding: 6px 14px;">
+                                🔄 Coba Muat Ulang
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                historyTableBody.innerHTML = retryHtml;
+                if (mobileCardsContainer) {
+                    mobileCardsContainer.innerHTML = `
+                        <div style="text-align: center; color: #dc2626; font-size: 13px; padding: 18px; background: #fef2f2; border: 1px solid #fee2e2; border-radius: 8px;">
+                            ⚠️ Gagal memuat riwayat: ${error.message}<br>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="loadHistory()" style="margin-top: 8px; width: auto; padding: 6px 14px;">
+                                🔄 Coba Muat Ulang
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // =========================
+        // PROSES PRESENSI (GPS KE CV BERKAT SENTOSA)
+        // =========================
+        async function handleAttendance() {
+            if (!navigator.geolocation) {
+                showBanner('danger', 'GPS Tidak Didukung', 'Browser Anda tidak mendukung fitur Geolocation.');
+                return;
+            }
+
+            hideBanner();
+
+            const isCheckOut = currentAttendanceState === 'working';
+            const endpoint = isCheckOut ? '/attendance/check-out' : '/attendance/check-in';
+
+            attendanceButton.disabled = true;
+            attendanceButton.textContent = '📡 Mengambil lokasi GPS HP...';
+
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const acc = position.coords.accuracy;
+                    window.lastGpsCoords = { lat, lng, acc };
+
+                    attendanceButton.textContent = '⏳ Mengirim data presensi ke server...';
+
+                    const payload = { latitude: lat, longitude: lng };
+                    if (!isCheckOut && currentTargetOffice && currentTargetOffice.id) {
+                        payload.office_location_id = parseInt(currentTargetOffice.id, 10);
+                    }
+
+                    try {
+                        const data = await apiRequest(endpoint, {
+                            method: 'POST',
+                            body: payload
+                        });
+
+                        showBanner(
+                            'success',
+                            isCheckOut ? '✅ Check-Out Berhasil!' : '✅ Check-In Berhasil!',
+                            data.message || 'Presensi Anda telah berhasil dicatat ke sistem.'
+                        );
+
+                        await loadDashboard();
+                        await loadHistory();
+
+                    } catch (error) {
+                        console.error('Presensi gagal:', error);
+
+                        showBanner(
+                            'danger',
+                            '❌ Presensi Gagal',
+                            `${error.message}<br><small style="margin-top: 6px; display: block; color: #7f1d1d;">💡 Anda dapat mengecek jarak dengan tombol <strong>"Cek Jarak GPS Saya"</strong>, atau meminta admin mengkalibrasi koordinat/radius kantor di menu Admin.</small>`
+                        );
+
+                        attendanceButton.disabled = false;
+                        attendanceButton.className = 'btn btn-warning';
+                        attendanceButton.textContent = isCheckOut
+                            ? '🔄 Coba Check-Out Lagi'
+                            : '🔄 Coba Check-In Lagi';
+
+                        renderGpsDistances(lat, lng, acc);
+                    }
+                },
+                (error) => {
+                    console.error('GPS error:', error);
+                    let errMsg = 'Terjadi kesalahan saat mengambil lokasi dari HP.';
+                    if (error.code === 1) {
+                        errMsg = 'Izin lokasi (GPS) ditolak oleh browser HP. Silakan aktifkan izin lokasi di pengaturan browser dan segarkan halaman.';
+                    } else if (error.code === 2) {
+                        errMsg = 'Sinyal GPS tidak ditemukan. Pastikan GPS HP aktif.';
+                    } else if (error.code === 3) {
+                        errMsg = 'Pengambilan sinyal GPS timeout (terlalu lama). Silakan coba lagi di tempat terbuka.';
+                    }
+
+                    showBanner('danger', 'Gagal Mendapatkan GPS', errMsg);
+
+                    attendanceButton.disabled = false;
+                    attendanceButton.textContent = isCheckOut ? '🏁 Selesai Kerja (Check-Out)' : '📍 Mulai Kerja (Check-In)';
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        async function loadWorkSchedule() {
+            try {
+                const res = await apiRequest('/work-schedule');
+                if (res.schedule) {
+                    const s = res.schedule;
+                    const inTime = s.work_start_time ? s.work_start_time.substring(0, 5) : '08:00';
+                    const tolTime = s.late_tolerance_time ? s.late_tolerance_time.substring(0, 5) : '08:15';
+                    const outTime = s.work_end_time ? s.work_end_time.substring(0, 5) : '17:00';
+                    const badge = document.getElementById('schedule-badge');
+                    if (badge) {
+                        badge.textContent = `⏰ Masuk ${inTime} (Toleransi ${tolTime}) • Pulang ${outTime}`;
+                    }
+                }
+            } catch (e) {
+                console.warn('Jadwal error:', e);
+            }
+        }
+
+        attendanceButton.addEventListener('click', handleAttendance);
+
+        // Load data awal
+        loadWorkSchedule();
+        loadProfile();
+        loadOffices().then(() => {
+            loadDashboard();
+            loadHistory();
+        });
+    </script>
+</body>
+
+</html>

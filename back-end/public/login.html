@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Login - Absensi CV Berkat Sentosa</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Absensi CBS">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="background: #090d16; margin: 0;">
+
+    <div class="login-page-wrapper">
+        <!-- AMBIENT GLOWING ORBS ANIMASI -->
+        <div class="ambient-orb ambient-orb-1"></div>
+        <div class="ambient-orb ambient-orb-2"></div>
+        <div class="ambient-orb ambient-orb-3"></div>
+
+        <!-- KARTU LOGIN INTERAKTIF -->
+        <div class="interactive-login-card" id="login-card-box">
+
+            <!-- HEADER BRANDING -->
+            <div class="login-brand-header">
+                <div class="brand-emblem" id="brand-emblem-icon" title="CV Berkat Sentosa">
+                    🏢
+                </div>
+                <h1 class="brand-title">Absensi CV Berkat Sentosa</h1>
+                <p class="brand-subtitle" id="role-subtitle-text">Portal Presensi Terintegrasi & Validasi Lokasi CV Berkat Sentosa</p>
+            </div>
+
+            <!-- INTERACTIVE ROLE SEGMENTED SWITCHER -->
+            <div class="role-segmented-control" id="role-switcher-container">
+                <button type="button" class="role-segment-btn active" id="btn-tab-employee" onclick="switchLoginRole('employee')">
+                    <span style="font-size: 16px;">👤</span>
+                    <span>Karyawan</span>
+                </button>
+                <button type="button" class="role-segment-btn" id="btn-tab-admin" onclick="switchLoginRole('admin')">
+                    <span style="font-size: 16px;">🛡️</span>
+                    <span>Administrator</span>
+                </button>
+            </div>
+
+            <!-- AKSES CEPAT DEMO KREDENSIAL -->
+            <div class="demo-accounts-box">
+                <div class="demo-title">
+                    <span>⚡</span>
+                    <span>Akses Cepat Demo (1-Klik Otomatis):</span>
+                </div>
+                <div class="demo-pills">
+                    <button type="button" class="demo-pill-btn" onclick="fillDemoCredentials('admin@cbs.com', 'password', 'admin')">
+                        🛡️ Admin (admin@cbs.com)
+                    </button>
+                    <button type="button" class="demo-pill-btn" onclick="fillDemoCredentials('budi@cbs.com', 'password', 'employee')">
+                        👤 Karyawan (budi@cbs.com)
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- FORM LOGIN UTAMA -->
+            <div id="login-form-container">
+                <form id="login-form">
+                    <!-- EMAIL INPUT -->
+                    <div class="interactive-input-group">
+                        <label for="email" id="email-label">Email Akun Karyawan</label>
+                        <div class="input-icon-wrapper">
+                            <span class="input-icon-prefix">✉️</span>
+                            <input type="email" id="email" class="interactive-input" placeholder="budi@cbs.com" required autocomplete="email">
+                        </div>
+                    </div>
+
+                    <!-- PASSWORD INPUT -->
+                    <div class="interactive-input-group">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <label for="password" style="margin: 0;">Password</label>
+                            <span id="caps-indicator" class="caps-lock-warning">⚠️ Caps Lock Aktif</span>
+                        </div>
+                        <div class="input-icon-wrapper">
+                            <span class="input-icon-prefix">🔒</span>
+                            <input type="password" id="password" class="interactive-input" placeholder="Masukkan password" required autocomplete="current-password">
+                            <button type="button" id="toggle-password-btn" class="password-toggle-btn" onclick="togglePasswordVisibility('password', this)" title="Tampilkan Password">
+                                👁️
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- REMEMBER ME & HELP -->
+                    <div class="login-extra-row">
+                        <label class="remember-label">
+                            <input type="checkbox" id="remember-me" class="remember-checkbox">
+                            <span>Ingat Saya</span>
+                        </label>
+                        <a href="javascript:void(0)" onclick="handleLoginHelp()" style="color: #2563eb; text-decoration: none; font-size: 12px; font-weight: 600;">
+                            Bantuan Akun?
+                        </a>
+                    </div>
+
+                    <!-- TOMBOL SUBMIT LOGIN -->
+                    <button type="submit" id="login-button" class="btn-login-submit">
+                        <span id="login-btn-icon">🚀</span>
+                        <span id="login-btn-text">Masuk sebagai Karyawan</span>
+                    </button>
+
+                    <!-- NOTIFIKASI ERROR / SUKSES -->
+                    <div id="login-message" style="display: none; margin-top: 14px; padding: 10px 12px; border-radius: 8px; font-size: 13px; text-align: center;"></div>
+                </form>
+
+                <!-- LINK KHUSUS DAFTAR ADMIN BARU (HANYA AKTIF SAAT ROLE ADMIN) -->
+                <div id="admin-register-switch" style="display: none; margin-top: 16px; text-align: center;">
+                    <a href="javascript:void(0)" onclick="showAdminRegisterForm()" style="color: #2563eb; font-size: 13px; font-weight: 600; text-decoration: none;">
+                        ➕ Belum punya akun Admin? <u>Daftar Admin Baru</u>
+                    </a>
+                </div>
+            </div>
+
+            <!-- FORM DAFTAR ADMIN BARU -->
+            <div id="admin-register-container" style="display: none;">
+                <div style="background: #eff6ff; border: 1px solid #dbeafe; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+                    <h3 style="font-size: 15px; margin: 0 0 4px 0; color: #1e40af;">
+                        🛡️ Registrasi Admin Baru
+                    </h3>
+                    <p style="font-size: 12px; color: #64748b; margin: 0;">
+                        Daftarkan akun administrator baru untuk sistem CV Berkat Sentosa
+                    </p>
+                </div>
+
+                <form id="admin-register-form">
+                    <div class="interactive-input-group">
+                        <label for="reg-name">Nama Lengkap Administrator</label>
+                        <div class="input-icon-wrapper">
+                            <span class="input-icon-prefix">👤</span>
+                            <input type="text" id="reg-name" class="interactive-input" placeholder="Contoh: Dian Ayu Wardani" required>
+                        </div>
+                    </div>
+
+                    <div class="interactive-input-group">
+                        <label for="reg-email">Email / Gmail Baru</label>
+                        <div class="input-icon-wrapper">
+                            <span class="input-icon-prefix">✉️</span>
+                            <input type="email" id="reg-email" class="interactive-input" placeholder="admin.baru@gmail.com" required>
+                        </div>
+                    </div>
+
+                    <div class="interactive-input-group">
+                        <label for="reg-password">Password Baru</label>
+                        <div class="input-icon-wrapper">
+                            <span class="input-icon-prefix">🔒</span>
+                            <input type="password" id="reg-password" class="interactive-input" placeholder="Minimal 6 karakter" minlength="6" required oninput="checkPasswordStrength(this.value)">
+                            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('reg-password', this)" title="Tampilkan Password">
+                                👁️
+                            </button>
+                        </div>
+                        <!-- KEKUATAN PASSWORD METER -->
+                        <div id="strength-container" style="display: none; margin-top: 6px;">
+                            <div style="height: 4px; background: #e2e8f0; border-radius: 2px; overflow: hidden;">
+                                <div id="strength-bar" style="height: 100%; width: 0%; background: #dc2626; transition: width 0.25s ease, background 0.25s ease;"></div>
+                            </div>
+                            <small id="strength-text" style="font-size: 11px; color: #64748b; margin-top: 3px; display: block;"></small>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="reg-button" class="btn-login-submit btn-admin-submit" style="margin-top: 10px;">
+                        <span>➕ Daftarkan Admin Baru</span>
+                    </button>
+
+                    <div id="reg-message" style="display: none; margin-top: 12px; padding: 10px 12px; border-radius: 8px; font-size: 13px; text-align: center;"></div>
+                </form>
+
+                <div style="margin-top: 16px; text-align: center;">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="showLoginForm('admin')" style="width: 100%;">
+                        ← Kembali ke Form Login Admin
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

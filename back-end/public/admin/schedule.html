@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Jadwal Kerja Karyawan - CV Berkat Sentosa</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- SIDEBAR OVERLAY ADMIN -->
+    <div id="admin-sidebar-overlay" class="sidebar-overlay" onclick="closeAdminSidebar()"></div>
+
+    <!-- SIDEBAR DRAWER ADMIN -->
+    <aside id="admin-sidebar-drawer" class="sidebar-drawer">
+        <div class="sidebar-header sidebar-header-admin">
+            <button type="button" class="sidebar-close-btn" onclick="closeAdminSidebar()" title="Tutup Menu">&times;</button>
+            <div class="sidebar-user-info">
+                <div class="sidebar-user-avatar" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-color: rgba(255,255,255,0.3);">🛡️</div>
+                <div class="sidebar-user-meta">
+                    <div id="drawer-admin-name" class="sidebar-user-name">Memuat Nama...</div>
+                    <div id="drawer-admin-email" class="sidebar-user-email">Memuat Email...</div>
+                    <div class="sidebar-badges-row">
+                        <span class="drawer-badge-admin">🛡️ Super Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="sidebar-menu-category">
+                <span>📁</span>
+                <span>Ringkasan & Utama</span>
+            </div>
+            <a href="dashboard.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard Utama</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>👥</span>
+                <span>Manajemen SDM</span>
+            </div>
+            <a href="employees.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Karyawan & Akun</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>⏰</span>
+                <span>Presensi & Operasional</span>
+            </div>
+            <a href="schedule.html" class="sidebar-menu-item active active-admin">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">⏰</span>
+                    <span>Jadwal Kerja Kantor</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=approvals" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📝</span>
+                    <span>Persetujuan Izin</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=rekap" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Rekap Presensi</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="offices.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">🏢</span>
+                    <span>Lokasi Kantor CBS</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>📈</span>
+                <span>Analisis Kinerja</span>
+            </div>
+            <a href="analytics.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Hasil Kedisiplinan</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button type="button" class="sidebar-logout-btn" onclick="handleLogout('../login.html')">
+                <span>🚪</span>
+                <span>Keluar (Logout)</span>
+            </button>
+            <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 8px;">
+                CV Berkat Sentosa v2.0
+            </div>
+        </div>
+    </aside>
+
+    <div class="page-container">
+        <div class="main-card wide-card">
+
+            <!-- TOP APP BAR ADMIN -->
+            <div class="top-app-bar">
+                <div class="top-app-bar-left">
+                    <button type="button" class="menu-toggle-btn" onclick="toggleAdminSidebar()" title="Buka Menu Admin" aria-label="Menu">
+                        ☰
+                    </button>
+                    <div>
+                        <div class="top-brand-title">Jadwal Kerja</div>
+                        <div class="top-brand-subtitle">CV Berkat Sentosa</div>
+                    </div>
+                </div>
+
+                <!-- DESKTOP NAVIGATION TABS ADMIN -->
+                <nav class="desktop-nav-links">
+                    <a href="dashboard.html" class="desktop-nav-tab">
+                        <span>📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="employees.html" class="desktop-nav-tab">
+                        <span>👥</span>
+                        <span>Karyawan</span>
+                    </a>
+                    <a href="schedule.html" class="desktop-nav-tab active active-admin">
+                        <span>⏰</span>
+                        <span>Jam Kerja</span>
+                    </a>
+                    <a href="offices.html" class="desktop-nav-tab">
+                        <span>🏢</span>
+                        <span>Lokasi CBS</span>
+                    </a>
+                    <a href="attendances.html" class="desktop-nav-tab">
+                        <span>📋</span>
+                        <span>Rekap & Izin</span>
+                    </a>
+                    <a href="analytics.html" class="desktop-nav-tab">
+                        <span>📊</span>
+                        <span>Kedisiplinan</span>
+                    </a>
+                </nav>
+
+                <div class="top-app-bar-right">
+                    <button type="button" class="top-action-btn-icon" onclick="loadScheduleData()" title="Muat Ulang Data">🔄</button>
+                    <button type="button" class="top-action-btn-logout desktop-only-btn" onclick="handleLogout('../login.html')" title="Keluar">
+                        🚪 Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- ALERT NOTIFIKASI -->
+            <div id="alert-box" style="display: none; margin-bottom: 16px;"></div>
+
+            <!-- 1. RINGKASAN JADWAL OPERASIONAL KANTOR AKTIF -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <h3 style="font-size: 16px; font-weight: 700; color: #0f172a; margin: 0;">
+                                ⏰ Pengaturan Jam Kerja Kantor CV Berkat Sentosa
+                            </h3>
+                            <span class="badge badge-success" style="font-size: 11px;">Aktif</span>
+                        </div>
+                        <p style="font-size: 12.5px; color: #64748b; margin: 4px 0 0 0;">
+                            Aturan baku jam masuk, batas toleransi keterlambatan, dan jam pulang presensi karyawan.
+                        </p>
+                    </div>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="toggleEditScheduleForm()" style="font-size: 12px; padding: 6px 14px;">
+                        ✏️ Atur Jam Operasional
+                    </button>
+                </div>
+
+                <!-- 4 KARTU RINGKASAN JAM KERJA -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px;">
+                        <div style="font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase;">Mulai Check-In</div>
+                        <div id="card-checkin-start" style="font-size: 20px; font-weight: 800; color: #2563eb; margin-top: 2px;">--:-- WIB</div>
+                        <small style="color: #64748b; font-size: 11px;">Presensi mulai dibuka</small>
+                    </div>
+
+                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 14px;">
+                        <div style="font-size: 11px; font-weight: 600; color: #166534; text-transform: uppercase;">Jam Masuk Standar</div>
+                        <div id="card-work-start" style="font-size: 20px; font-weight: 800; color: #16a34a; margin-top: 2px;">--:-- WIB</div>
+                        <small style="color: #166534; font-size: 11px;">Waktu masuk kantor</small>
+                    </div>
+
+                    <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 14px;">
+                        <div style="font-size: 11px; font-weight: 600; color: #92400e; text-transform: uppercase;">Batas Toleransi</div>
+                        <div id="card-late-tol" style="font-size: 20px; font-weight: 800; color: #d97706; margin-top: 2px;">--:-- WIB</div>
+                        <small style="color: #92400e; font-size: 11px;">Lewat ini dihitung telat</small>
+                    </div>
+
+                    <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 14px;">
+                        <div style="font-size: 11px; font-weight: 600; color: #1e40af; text-transform: uppercase;">Jam Pulang Kerja</div>
+                        <div id="card-work-end" style="font-size: 20px; font-weight: 800; color: #1d4ed8; margin-top: 2px;">--:-- WIB</div>
+                        <small style="color: #1e40af; font-size: 11px;">Mulai boleh check-out</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. FORMULIR EDIT JAM KERJA (COLLAPSIBLE) -->
+            <div id="edit-schedule-panel" style="display: none; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <div>
+                        <h4 style="margin: 0; font-size: 15px; font-weight: 700; color: #0f172a;">✏️ Ubah Pengaturan Jam Kerja</h4>
+                        <small style="color: #64748b;">Perubahan jam ini akan diterapkan pada kalkulasi presensi seluruh karyawan.</small>
+                    </div>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="toggleEditScheduleForm()">&times; Tutup Form</button>
+                </div>
+
+                <form id="schedule-form">
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label for="sched-name" style="font-weight: 600; font-size: 12.5px;">Nama Pola Jam Kerja</label>
+                        <input type="text" id="sched-name" required placeholder="Contoh: Jam Kerja Reguler CV Berkat Sentosa">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px;">
+                        <div class="form-group">
+                            <label for="check_in_start" style="font-size: 12px; font-weight: 600;">1. Jam Buka Check-In</label>
+                            <input type="time" id="check_in_start" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="work_start_time" style="font-size: 12px; font-weight: 600; color: #166534;">2. Jam Masuk Standar</label>
+                            <input type="time" id="work_start_time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="late_tolerance_time" style="font-size: 12px; font-weight: 600; color: #92400e;">3. Batas Toleransi Telat</label>
+                            <input type="time" id="late_tolerance_time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="check_in_end" style="font-size: 12px; font-weight: 600; color: #991b1b;">4. Batas Akhir Check-In</label>
+                            <input type="time" id="check_in_end" required>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px;">
+                        <div class="form-group">
+                            <label for="work_end_time" style="font-size: 12px; font-weight: 600; color: #1e40af;">5. Jam Selesai Kerja (Pulang)</label>
+                            <input type="time" id="work_end_time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="check_out_end" style="font-size: 12px; font-weight: 600;">6. Batas Akhir Check-Out</label>
+                            <input type="time" id="check_out_end" required>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="toggleEditScheduleForm()">Batal</button>
+                        <button type="submit" id="btn-save" class="btn btn-primary btn-sm">💾 Simpan Jadwal</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 3. TABEL JADWAL & STATUS KEPATUHAN KARYAWAN -->
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h4 style="margin: 0; font-size: 15px; font-weight: 700; color: #0f172a;">
+                            👥 Jadwal & Status Kehadiran Karyawan
+                        </h4>
+                        <small style="color: #64748b;">Pengecekan jam masuk, pulang, dan kepatuhan karyawan per tanggal</small>
+                    </div>
+
+                    <!-- FILTER TANGGAL & SEARCH -->
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <label for="filter-schedule-date" style="font-size: 12px; font-weight: 600; color: #475569; margin: 0;">Tanggal:</label>
+                            <input type="date" id="filter-schedule-date" onchange="loadEmployeeScheduleTable()" style="padding: 6px 10px; font-size: 12.5px; border: 1.5px solid #cbd5e1; border-radius: 8px;">
+                        </div>
+                        <input type="text" id="search-schedule-emp" placeholder="🔍 Cari nama / NIP karyawan..." oninput="filterScheduleTable(this.value)" style="padding: 6px 12px; font-size: 12.5px; border: 1.5px solid #cbd5e1; border-radius: 8px; width: 220px;">
+                    </div>
+                </div>
+
+                <!-- TABEL JADWAL KARYAWAN -->
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 45px;">No</th>
+                                <th>Karyawan</th>
+                                <th>Divisi / Jabatan</th>
+                                <th>Jam Masuk Standar</th>
+                                <th>Jam Pulang Standar</th>
+                                <th>Realisasi Check-In</th>
+                                <th>Realisasi Check-Out</th>
+                                <th>Status Kehadiran</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employee-schedule-tbody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; color: #64748b; padding: 20px;">Memuat data jadwal karyawan...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="../js/api.js"></script>
+    <script>
+        const token = localStorage.getItem('api_token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user || user.role !== 'admin') {
+            window.location.href = '../login.html';
+        }
+
+        const alertBox = document.getElementById('alert-box');
+        let currentSchedule = null;
+        let allEmployeesList = [];
+        let allAttendancesList = [];
+        let combinedRows = [];
+
+        function showAlert(type, message) {
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+            alertBox.innerHTML = message;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => { alertBox.style.display = 'none'; }, 5000);
+        }
+
+        function formatTimeForInput(timeStr) {
+            if (!timeStr) return '';
+            return timeStr.substring(0, 5);
+        }
+
+        function toggleEditScheduleForm() {
+            const panel = document.getElementById('edit-schedule-panel');
+            if (panel.style.display === 'none' || !panel.style.display) {
+                panel.style.display = 'block';
+                panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                panel.style.display = 'none';
+            }
+        }
+
+        async function loadScheduleData() {
+            try {
+                const data = await apiRequest('/admin/work-schedule');
+                const s = data.schedule;
+
+                if (s) {
+                    currentSchedule = s;
+                    document.getElementById('card-checkin-start').textContent = (s.check_in_start ? s.check_in_start.substring(0, 5) : '06:00') + ' WIB';
+                    document.getElementById('card-work-start').textContent = (s.work_start_time ? s.work_start_time.substring(0, 5) : '08:00') + ' WIB';
+                    document.getElementById('card-late-tol').textContent = (s.late_tolerance_time ? s.late_tolerance_time.substring(0, 5) : '08:15') + ' WIB';
+                    document.getElementById('card-work-end').textContent = (s.work_end_time ? s.work_end_time.substring(0, 5) : '17:00') + ' WIB';
+
+                    // Form values
+                    document.getElementById('sched-name').value = s.name || 'Jam Kerja Reguler CV Berkat Sentosa';
+                    document.getElementById('check_in_start').value = formatTimeForInput(s.check_in_start);
+                    document.getElementById('work_start_time').value = formatTimeForInput(s.work_start_time);
+                    document.getElementById('late_tolerance_time').value = formatTimeForInput(s.late_tolerance_time);
+                    document.getElementById('check_in_end').value = formatTimeForInput(s.check_in_end);
+                    document.getElementById('work_end_time').value = formatTimeForInput(s.work_end_time);
+                    document.getElementById('check_out_end').value = formatTimeForInput(s.check_out_end);
+                }
+
+                // Muat tabel jadwal karyawan
+                await loadEmployeeScheduleTable();
+
+            } catch (err) {
+                console.error(err);
+                showAlert('danger', 'Gagal memuat jadwal operasional: ' + err.message);
+            }
+        }
+
+        async function loadEmployeeScheduleTable() {
+            const tbody = document.getElementById('employee-schedule-tbody');
+            const dateInput = document.getElementById('filter-schedule-date');
+            const selectedDate = dateInput.value || new Date().toISOString().split('T')[0];
+
+            try {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 18px;">Memuat data karyawan dan jadwal...</td></tr>`;
+
+                // 1. Ambil seluruh data karyawan aktif jika belum ada
+                if (!allEmployeesList.length) {
+                    const empRes = await apiRequest('/admin/employees');
+                    allEmployeesList = empRes.employees || [];
+                }
+
+                // 2. Ambil catatan presensi pada tanggal yang dipilih
+                const attRes = await apiRequest(`/admin/attendances?start_date=${selectedDate}&end_date=${selectedDate}&per_page=100`);
+                allAttendancesList = attRes.attendances || [];
+
+                // 3. Gabungkan data
+                const stdIn = currentSchedule && currentSchedule.work_start_time ? currentSchedule.work_start_time.substring(0, 5) + ' WIB' : '08:00 WIB';
+                const stdOut = currentSchedule && currentSchedule.work_end_time ? currentSchedule.work_end_time.substring(0, 5) + ' WIB' : '17:00 WIB';
+
+                combinedRows = allEmployeesList.map(emp => {
+                    const att = allAttendancesList.find(a => a.employee_id === emp.id || (a.employee && a.employee.id === emp.id));
+                    
+                    let statusHtml = '<span class="badge badge-secondary" style="color: #64748b; background: #f1f5f9;">Belum Hadir</span>';
+                    let checkInText = '-';
+                    let checkOutText = '-';
+
+                    if (att) {
+                        if (att.check_in) {
+                            checkInText = new Date(att.check_in).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+                        }
+                        if (att.check_out) {
+                            checkOutText = new Date(att.check_out).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+                        }
+
+                        if (att.status === 'present') {
+                            statusHtml = '<span class="badge badge-success">Hadir Tepat Waktu</span>';
+                        } else if (att.status === 'late') {
+                            statusHtml = '<span class="badge badge-warning">Terlambat</span>';
+                        } else if (att.status === 'leave') {
+                            statusHtml = '<span class="badge badge-info">Izin</span>';
+                        } else if (att.status === 'sick') {
+                            statusHtml = '<span class="badge badge-warning">Sakit</span>';
+                        } else if (att.status === 'absent') {
+                            statusHtml = '<span class="badge badge-danger">Alpa</span>';
+                        }
+                    }
+
+                    return {
+                        id: emp.id,
+                        name: emp.user ? emp.user.name : (emp.name || 'Karyawan'),
+                        employee_number: emp.employee_number || '-',
+                        department: emp.department || 'Umum',
+                        position: emp.position || 'Staff',
+                        stdIn,
+                        stdOut,
+                        checkInText,
+                        checkOutText,
+                        statusHtml
+                    };
+                });
+
+                filterScheduleTable(document.getElementById('search-schedule-emp').value);
+
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #dc2626; padding: 18px;">Gagal memuat jadwal karyawan: ${err.message}</td></tr>`;
+            }
+        }
+
+        function filterScheduleTable(keyword) {
+            const tbody = document.getElementById('employee-schedule-tbody');
+            const term = (keyword || '').toLowerCase().trim();
+
+            const filtered = combinedRows.filter(r => 
+                r.name.toLowerCase().includes(term) ||
+                r.employee_number.toLowerCase().includes(term) ||
+                r.department.toLowerCase().includes(term) ||
+                r.position.toLowerCase().includes(term)
+            );
+
+            if (!filtered.length) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 18px;">Tidak ada data jadwal karyawan yang cocok.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach((r, idx) => {
+                html += `
+                    <tr>
+                        <td style="color: #64748b;">${idx + 1}</td>
+                        <td>
+                            <strong>${r.name}</strong>
+                            <div style="font-size: 11.5px; color: #64748b;">NIP: ${r.employee_number}</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600; color: #1e293b; font-size: 12.5px;">${r.position}</div>
+                            <small style="color: #64748b;">${r.department}</small>
+                        </td>
+                        <td style="color: #166534; font-weight: 600;">${r.stdIn}</td>
+                        <td style="color: #1e40af; font-weight: 600;">${r.stdOut}</td>
+                        <td><strong>${r.checkInText}</strong></td>
+                        <td><strong>${r.checkOutText}</strong></td>
+                        <td>${r.statusHtml}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        document.getElementById('schedule-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const btnSave = document.getElementById('btn-save');
+            btnSave.disabled = true;
+            btnSave.textContent = 'Menyimpan...';
+
+            try {
+                const payload = {
+                    name: document.getElementById('sched-name').value,
+                    check_in_start: document.getElementById('check_in_start').value,
+                    work_start_time: document.getElementById('work_start_time').value,
+                    late_tolerance_time: document.getElementById('late_tolerance_time').value,
+                    check_in_end: document.getElementById('check_in_end').value,
+                    work_end_time: document.getElementById('work_end_time').value,
+                    check_out_end: document.getElementById('check_out_end').value,
+                };
+
+                const res = await apiRequest('/admin/work-schedule', {
+                    method: 'PUT',
+                    body: payload
+                });
+
+                showAlert('success', '✅ ' + (res.message || 'Pengaturan jam kerja berhasil diperbarui.'));
+                toggleEditScheduleForm();
+                loadScheduleData();
+            } catch (err) {
+                showAlert('danger', '❌ Gagal menyimpan: ' + err.message);
+            } finally {
+                btnSave.disabled = false;
+                btnSave.textContent = '💾 Simpan Jadwal';
+            }
+        });
+
+        function toggleAdminSidebar() {
+            const drawer = document.getElementById('admin-sidebar-drawer');
+            if (drawer.classList.contains('open')) {
+                closeAdminSidebar();
+            } else {
+                openAdminSidebar();
+            }
+        }
+
+        function openAdminSidebar() {
+            document.getElementById('admin-sidebar-drawer').classList.add('open');
+            document.getElementById('admin-sidebar-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('sidebar-open');
+        }
+
+        function closeAdminSidebar() {
+            document.getElementById('admin-sidebar-drawer').classList.remove('open');
+            document.getElementById('admin-sidebar-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+            document.body.classList.remove('sidebar-open');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Default filter date to today
+            document.getElementById('filter-schedule-date').value = new Date().toISOString().split('T')[0];
+            loadScheduleData();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Hasil Analisis Kedisiplinan Karyawan - CV Berkat Sentosa</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Chart.js CDN for Interactive Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- SIDEBAR OVERLAY ADMIN -->
+    <div id="admin-sidebar-overlay" class="sidebar-overlay" onclick="closeAdminSidebar()"></div>
+
+    <!-- SIDEBAR DRAWER ADMIN -->
+    <aside id="admin-sidebar-drawer" class="sidebar-drawer">
+        <div class="sidebar-header sidebar-header-admin">
+            <button type="button" class="sidebar-close-btn" onclick="closeAdminSidebar()" title="Tutup Menu">&times;</button>
+            <div class="sidebar-user-info">
+                <div class="sidebar-user-avatar" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); border-color: rgba(255,255,255,0.3);">🛡️</div>
+                <div class="sidebar-user-meta">
+                    <div id="drawer-admin-name" class="sidebar-user-name">Memuat Nama...</div>
+                    <div id="drawer-admin-email" class="sidebar-user-email">Memuat Email...</div>
+                    <div class="sidebar-badges-row">
+                        <span class="drawer-badge-admin">🛡️ Super Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="sidebar-menu-category">
+                <span>📁</span>
+                <span>Ringkasan & Utama</span>
+            </div>
+            <a href="dashboard.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Dashboard Utama</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>👥</span>
+                <span>Manajemen SDM</span>
+            </div>
+            <a href="employees.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">👥</span>
+                    <span>Data Karyawan & Akun</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>⏰</span>
+                <span>Presensi & Operasional</span>
+            </div>
+            <a href="schedule.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">⏰</span>
+                    <span>Jadwal Kerja Kantor</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=approvals" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📝</span>
+                    <span>Persetujuan Izin</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="attendances.html?tab=rekap" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📋</span>
+                    <span>Rekap Presensi</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+            <a href="offices.html" class="sidebar-menu-item">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">🏢</span>
+                    <span>Lokasi Kantor CBS</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+
+            <div class="sidebar-menu-category" style="margin-top: 6px;">
+                <span>📈</span>
+                <span>Analisis Kinerja</span>
+            </div>
+            <a href="analytics.html" class="sidebar-menu-item active active-admin">
+                <div class="sidebar-menu-item-left">
+                    <span class="sidebar-menu-icon">📊</span>
+                    <span>Hasil Kedisiplinan</span>
+                </div>
+                <span class="sidebar-chevron">›</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button type="button" class="sidebar-logout-btn" onclick="handleLogout('../login.html')">
+                <span>🚪</span>
+                <span>Keluar (Logout)</span>
+            </button>
+            <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-top: 8px;">
+                CV Berkat Sentosa v2.0
+            </div>
+        </div>
+    </aside>
+
+    <div class="page-container">
+        <div class="main-card wide-card">
+
+            <!-- TOP APP BAR ADMIN -->
+            <div class="top-app-bar">
+                <div class="top-app-bar-left">
+                    <button type="button" class="menu-toggle-btn" onclick="toggleAdminSidebar()" title="Buka Menu Admin" aria-label="Menu">
+                        ☰
+                    </button>
+                    <div>
+                        <div class="top-brand-title">Kedisiplinan</div>
+                        <div class="top-brand-subtitle">CV Berkat Sentosa</div>
+                    </div>
+                </div>
+
+                <!-- DESKTOP NAVIGATION TABS ADMIN -->
+                <nav class="desktop-nav-links">
+                    <a href="dashboard.html" class="desktop-nav-tab">
+                        <span>📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="employees.html" class="desktop-nav-tab">
+                        <span>👥</span>
+                        <span>Karyawan</span>
+                    </a>
+                    <a href="schedule.html" class="desktop-nav-tab">
+                        <span>⏰</span>
+                        <span>Jam Kerja</span>
+                    </a>
+                    <a href="offices.html" class="desktop-nav-tab">
+                        <span>🏢</span>
+                        <span>Lokasi CBS</span>
+                    </a>
+                    <a href="attendances.html" class="desktop-nav-tab">
+                        <span>📋</span>
+                        <span>Rekap & Izin</span>
+                    </a>
+                    <a href="analytics.html" class="desktop-nav-tab active active-admin">
+                        <span>📊</span>
+                        <span>Kedisiplinan</span>
+                    </a>
+                </nav>
+
+                <div class="top-app-bar-right">
+                    <button type="button" class="top-action-btn-icon" onclick="loadKMeansAnalytics()" title="Segarkan Data">🔄</button>
+                    <button type="button" class="top-action-btn-logout desktop-only-btn" onclick="handleLogout('../login.html')" title="Keluar">
+                        🚪 Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- BAGIAN 1: HEADER & JUDUL UTAMA -->
+            <div class="analytics-header-section">
+                <div class="analytics-title-area">
+                    <h2 class="analytics-main-title">
+                        <span>📊</span> Hasil Analisis Kedisiplinan Karyawan
+                    </h2>
+                    <p class="analytics-main-subtitle">
+                        Ringkasan evaluasi tingkat kedisiplinan dan kepatuhan kehadiran staf CV Berkat Sentosa berdasarkan data riwayat presensi aktual.
+                    </p>
+                </div>
+
+                <!-- FILTER PERIODE SINGKAT -->
+                <div class="analytics-filter-simple">
+                    <div class="analytics-date-field">
+                        <label for="filter-start-date">Dari Tanggal</label>
+                        <input type="date" id="filter-start-date">
+                    </div>
+                    <div class="analytics-date-field">
+                        <label for="filter-end-date">Sampai Tanggal</label>
+                        <input type="date" id="filter-end-date">
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="loadKMeansAnalytics()" style="padding: 7px 14px; font-size: 12.5px;">
+                            <span>🔍 Tampilkan</span>
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="resetAnalyticsFilter()" style="padding: 7px 12px; font-size: 12.5px;">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTIFIKASI ERROR / STATUS -->
+            <div id="analytics-alert" style="display: none; margin-bottom: 20px;"></div>
+
+            <!-- KONTEN UTAMA: 2 KOLOM (GRAFIK & PENJELASAN) -->
+            <div id="analytics-main-content" class="analytics-main-grid">
+
+                <!-- BAGIAN 2: GRAFIK HASIL ANALISIS -->
+                <div class="analytics-card-panel">
+                    <div class="analytics-panel-header">
+                        <h3 class="analytics-panel-title">
+                            <span>📈</span> Grafik Hasil Analisis
+                        </h3>
+                        <span id="stat-total-badge" class="badge badge-info" style="font-size: 11px; padding: 3px 8px;">
+                            Total: - Karyawan
+                        </span>
+                    </div>
+
+                    <!-- DONUT CHART WRAPPER -->
+                    <div class="analytics-donut-wrapper">
+                        <canvas id="disciplineDistributionChart"></canvas>
+                    </div>
+
+                    <!-- RINGKASAN PERSENTASE KATEGORI -->
+                    <div id="analytics-summary-pills" class="analytics-pills-summary">
+                        <div class="analytics-pill-item" style="background: #f0fdf4; border-color: #bbf7d0;">
+                            <div id="pill-count-disiplin" class="analytics-pill-val" style="color: #16a34a;">0</div>
+                            <div class="analytics-pill-label" style="color: #166534;">🟢 Disiplin</div>
+                        </div>
+                        <div class="analytics-pill-item" style="background: #fffbeb; border-color: #fde68a;">
+                            <div id="pill-count-cukup" class="analytics-pill-val" style="color: #d97706;">0</div>
+                            <div class="analytics-pill-label" style="color: #92400e;">🟡 Cukup Disiplin</div>
+                        </div>
+                        <div class="analytics-pill-item" style="background: #fef2f2; border-color: #fecaca;">
+                            <div id="pill-count-evaluasi" class="analytics-pill-val" style="color: #dc2626;">0</div>
+                            <div class="analytics-pill-label" style="color: #991b1b;">🔴 Perlu Evaluasi</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 3: PENJELASAN HASIL ANALISIS -->
+                <div class="analytics-card-panel">
+                    <div class="analytics-panel-header">
+                        <h3 class="analytics-panel-title">
+                            <span>📝</span> Penjelasan Hasil Analisis
+                        </h3>
+                        <small style="color: #64748b; font-size: 12px;">Klasifikasi kehadiran aktual</small>
+                    </div>
+
+                    <div id="discipline-explanations-list" class="analytics-explanations-list">
+                        <div style="text-align: center; color: #64748b; padding: 30px;">
+                            Memuat data hasil analisis kedisiplinan...
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script>
+        const token = localStorage.getItem('api_token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user) {
+            window.location.href = '../login.html';
+        }
+        if (user.role !== 'admin') {
+            window.location.href = '../dashboard.html';
+        }
+
+        // Drawer Controls
+        function toggleAdminSidebar() {
+            const drawer = document.getElementById('admin-sidebar-drawer');
+            const overlay = document.getElementById('admin-sidebar-overlay');
+            if (drawer.classList.contains('open')) {
+                closeAdminSidebar();
+            } else {
+                drawer.classList.add('open');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeAdminSidebar() {
+            document.getElementById('admin-sidebar-drawer').classList.remove('open');
+            document.getElementById('admin-sidebar-overlay').classList.remove('active');
+        }
+
+        let distributionChartInstance = null;
+
+        async function loadKMeansAnalytics() {
+            const alertBox = document.getElementById('analytics-alert');
+            const mainContent = document.getElementById('analytics-main-content');
+            const explanationsList = document.getElementById('discipline-explanations-list');
+            const totalBadge = document.getElementById('stat-total-badge');
+
+            alertBox.style.display = 'none';
+
+            const startDate = document.getElementById('filter-start-date').value;
+            const endDate = document.getElementById('filter-end-date').value;
+
+            let queryParams = [];
+            if (startDate) queryParams.push(`start_date=${encodeURIComponent(startDate)}`);
+            if (endDate) queryParams.push(`end_date=${encodeURIComponent(endDate)}`);
+            const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+
+            try {
+                const res = await apiRequest(`/admin/kmeans-clustering${queryString}`);
+
+                if (res.status === 'insufficient_data' || !res.clusters || res.clusters.length === 0) {
+                    mainContent.innerHTML = `
+                        <div class="analytics-empty-box">
+                            <div style="font-size: 38px; margin-bottom: 8px;">📋</div>
+                            <div style="font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Data Kehadiran Belum Mencukupi</div>
+                            <p style="font-size: 12.5px; color: #64748b; margin: 0 auto; max-width: 460px; line-height: 1.5;">
+                                ${res.message || 'Belum ada cukup catatan presensi pada rentang tanggal yang dipilih. Pastikan karyawan sudah melakukan presensi masuk di sistem.'}
+                            </p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const totalEmployees = res.evaluation ? res.evaluation.total_employees_analyzed : (res.employees ? res.employees.length : 0);
+                if (totalBadge) {
+                    totalBadge.textContent = `Total: ${totalEmployees} Karyawan`;
+                }
+
+                // Cari data kategori berdasarkan urutan peringkat/label
+                const clusters = res.clusters || [];
+                const disiplin = clusters.find(c => c.rank === 1) || clusters[0] || null;
+                const cukup = clusters.find(c => c.rank === 2) || clusters[1] || null;
+                const evaluasi = clusters.find(c => c.rank === 3) || clusters[2] || null;
+
+                const countDisiplin = disiplin ? disiplin.member_count : 0;
+                const countCukup = cukup ? cukup.member_count : 0;
+                const countEvaluasi = evaluasi ? evaluasi.member_count : 0;
+
+                // Update angka pada ringkasan pill
+                const pillDisiplin = document.getElementById('pill-count-disiplin');
+                const pillCukup = document.getElementById('pill-count-cukup');
+                const pillEvaluasi = document.getElementById('pill-count-evaluasi');
+
+                if (pillDisiplin) pillDisiplin.textContent = countDisiplin;
+                if (pillCukup) pillCukup.textContent = countCukup;
+                if (pillEvaluasi) pillEvaluasi.textContent = countEvaluasi;
+
+                // 2. Render Donut Chart Distribusi
+                renderDistributionChart(countDisiplin, countCukup, countEvaluasi, totalEmployees);
+
+                // 3. Render 3 Kartu Penjelasan
+                renderExplanations(clusters, totalEmployees);
+
+            } catch (err) {
+                console.error('Gagal memuat analisis kedisiplinan:', err);
+                alertBox.className = 'alert alert-danger';
+                alertBox.style.display = 'block';
+                alertBox.innerHTML = `<strong>Gagal Memuat Data:</strong> <div>${err.message}</div>`;
+            }
+        }
+
+        function renderDistributionChart(disiplin, cukup, evaluasi, total) {
+            const canvas = document.getElementById('disciplineDistributionChart');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            if (distributionChartInstance) {
+                distributionChartInstance.destroy();
+            }
+
+            const isMobile = window.innerWidth <= 640;
+
+            distributionChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Disiplin', 'Cukup Disiplin', 'Perlu Evaluasi'],
+                    datasets: [{
+                        data: [disiplin, cukup, evaluasi],
+                        backgroundColor: [
+                            '#16a34a',
+                            '#f59e0b',
+                            '#dc2626'
+                        ],
+                        hoverBackgroundColor: [
+                            '#15803d',
+                            '#d97706',
+                            '#b91c1c'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: isMobile ? '54%' : '58%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: isMobile ? 10 : 12,
+                                padding: isMobile ? 8 : 12,
+                                font: {
+                                    size: isMobile ? 11 : 12,
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw || 0;
+                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                    return ` ${context.label}: ${value} Orang (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderExplanations(clusters, totalEmployees) {
+            const container = document.getElementById('discipline-explanations-list');
+            if (!container) return;
+
+            if (!clusters || clusters.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 20px;">Belum ada data penjelasan.</div>`;
+                return;
+            }
+
+            let html = '';
+
+            clusters.forEach((c) => {
+                const isDisiplin = c.rank === 1;
+                const isCukup = c.rank === 2;
+
+                const borderColor = isDisiplin ? '#16a34a' : (isCukup ? '#f59e0b' : '#dc2626');
+                const bgColor = isDisiplin ? '#f0fdf4' : (isCukup ? '#fffbeb' : '#fef2f2');
+                const badgeColor = isDisiplin ? 'badge-success' : (isCukup ? 'badge-warning' : 'badge-danger');
+                const badgeIcon = isDisiplin ? '🟢' : (isCukup ? '🟡' : '🔴');
+                const pct = totalEmployees > 0 ? ((c.member_count / totalEmployees) * 100).toFixed(1) : 0;
+                const m = c.metrics_summary || {};
+
+                html += `
+                    <div class="analytics-category-card" style="border-left: 4px solid ${borderColor};">
+                        <div class="analytics-category-header">
+                            <span class="badge ${badgeColor}" style="font-size: 12px; font-weight: 700; padding: 4px 10px;">
+                                ${badgeIcon} ${c.label}
+                            </span>
+                            <span style="font-size: 12.5px; font-weight: 700; color: #0f172a;">
+                                ${c.member_count} Orang <small style="color: #64748b; font-weight: 500;">(${pct}%)</small>
+                            </span>
+                        </div>
+
+                        <div class="analytics-category-metrics">
+                            <span>📊 Rata Kehadiran: <strong>${m.avg_attendance_rate || 0}%</strong></span>
+                            <span>⏰ Rata Telat: <strong>${m.avg_late_count || 0}x</strong></span>
+                            ${m.avg_absent_count > 0 ? `<span style="color: #dc2626;">🔴 Alpa: <strong>${m.avg_absent_count} hari</strong></span>` : '<span style="color: #16a34a;">🟢 Nihil Alpa</span>'}
+                        </div>
+
+                        <div class="analytics-category-desc">
+                            ${c.description}
+                        </div>
+
+                        <div class="analytics-category-recommendation" style="background: ${bgColor}; color: #0f172a; border: 1px solid ${borderColor}35;">
+                            <strong>💡 Rekomendasi:</strong> ${c.recommendation}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function resetAnalyticsFilter() {
+            document.getElementById('filter-start-date').value = '';
+            document.getElementById('filter-end-date').value = '';
+            loadKMeansAnalytics();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadKMeansAnalytics();
+        });
+    </script>
+</body>
+</html>
